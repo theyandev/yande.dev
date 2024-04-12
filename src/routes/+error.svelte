@@ -34,7 +34,7 @@
 
 <style>
     div {
-  background-color: #2a2a2a;
+
   display: flex;
   align-items: center;
   justify-content: center;
