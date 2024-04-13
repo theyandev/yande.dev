@@ -22,6 +22,9 @@
 			<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
 				<a href="/about">About</a>
 			</li>
+			<li aria-current={$page.url.pathname === '/servers' ? 'page' : undefined}>
+				<a href="/servers">Servers</a>
+			</li>
 			<li class="corner">
 				<a href="https://github.com/theyande/">
 					<img src={github} alt="GitHub" />
