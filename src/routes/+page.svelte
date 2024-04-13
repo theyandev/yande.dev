@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Cont from '$lib/components/Cont.svelte';
+	import { gracefulFetch } from '$lib/functions';
 	let languages = [
 		{
 			n: 'JavaScript',
@@ -65,13 +66,9 @@
 	]
 		.toSorted((a, b) => b.f - a.f)
 		.filter((a) => a.f > 0);
-	let projects = fetch(`https://api.github.com/search/issues?q=author:theyande`)
-		.then((r) => r.json())
-		.then((r) =>
-			[...new Set(r.items.map((i: any) => {
-				return i.repository_url.replace('https://api.github.com/repos/', '')
-			}))].map((i) => {return {name: i}}))
-		;
+
+	let projects = gracefulFetch(`/api/github`)
+		
 </script>
 
 <svelte:head>
@@ -112,12 +109,11 @@
 		<p>Fetching Contributions</p>
 	{:then projects}
 		<Cont foo={projects} />
-		{:catch  message}
+		{:catch a}
 		<p>Failed to load contributions</p>
 	{/await}
 	</section>
 	
-
 	<section class="center">
 		<h2>Languages</h2>
 		<p>here are some of the languages I know</p>
