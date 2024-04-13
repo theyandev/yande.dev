@@ -1,6 +1,8 @@
 <svelte:head>
 	<title>About</title>
-	<meta name="description" content="About" />
+	<meta name="description" content="About yande" />
+	<meta property="og:title" content="abot yande" />
+	<meta property="og:image" content="https://cataas.com/cat" />
 </svelte:head>
 
 <div class="text-column">
