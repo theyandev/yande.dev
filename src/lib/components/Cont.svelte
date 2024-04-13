@@ -38,11 +38,13 @@
 			
 				<main class="vertical">
 					<div class="horiz">
-						<img class="icon" src={git.owner.avatar_url} alt="" />
-						<div class="vertical"><a class="name" href={git.html_url}>{git.name}</a>
+						<img class="icon" src={git.owner?.avatar_url} alt="" />
+						<div class="vertical"><div class="horiz"><a class="name" href={git.html_url}>{git.name}</a>{#each git.languages.langs as lang}
+							<div class="lang">{lang[0]} {Math.round((lang[1]/git.languages.total)*100)}%</div>
+						{/each}</div>
                         <a
 							class="owner"
-							href={git.owner.html_url}>{git.owner.login}</a
+							href={git.owner?.html_url}>{git.owner?.login}</a
 						></div>
 					</div>
                     {#if git.description}
@@ -77,6 +79,16 @@
 </div>
 
 <style>
+	.lang {
+		font-size: 0.6rem;
+		display: flex;
+		align-items: center;
+		height: 100%;
+		margin-left: 5px;
+		background-color: rgb(76, 76, 76);
+		border-radius: 1rem;
+		padding: 0px 5px;
+	}
     .pr {
         margin: 0 2px;
         border: 1px solid rgba(255, 255, 255, 0.0) ;
