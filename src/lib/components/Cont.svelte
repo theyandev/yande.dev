@@ -11,16 +11,11 @@
 	 * @param {string | number | boolean} name
 	 */
 
-	let contrs = fetch(`https://api.github.com/search/issues?q=author:theyande`).then((r) =>
-		r.json()
-	);
-
+	
 	/**
 	 * @param {string} repo
 	 */
-	function fetchRepo(repo) {
-		return fetch(`https://api.github.com/repos/${repo}`).then((r) => r.json());
-	}
+	
 
 	/**
 	 * @param {any[]} array
@@ -39,13 +34,8 @@
 </script>
 
 <div class="stuff">
-	{#await contrs}
-		waiting
-	{:then r}
-		{#each foo as repo}
-			{#await fetchRepo(repo.name)}
-				<p>Waiting...</p>
-			{:then git}
+		{#each foo.git as git}
+			
 				<main class="vertical">
 					<div class="horiz">
 						<img class="icon" src={git.owner.avatar_url} alt="" />
@@ -62,32 +52,28 @@
                     {/if}
 
 					<div class="stats horiz">
-                        <a href="https://github.com/{repo.name}/issues?q=is%3Aissue+author%3Atheyande" class="pr"><img src={issue} alt="">{issues(
-							r.items.filter((/** @type {{ repository_url: string | any[]; }} */ c) =>
-								c.repository_url.includes(repo.name)
+                        <a href="{git.html_url}/issues?q=is%3Aissue+author%3Atheyande" class="pr"><img src={issue} alt="">{issues(
+							foo.contributions.items.filter((/** @type {{ repository_url: string | any[]; }} */ c) =>
+								c.repository_url.includes(git.full_name)
 							), "any"
 						).length}
                         </a>
-						<a href="https://github.com/{repo.name}/issues?q=is%3Apr+is%3Amerged+author%3Atheyande" class="pr"><img src={merged} alt="">{PRs(
-							r.items.filter((/** @type {{ repository_url: string | any[]; }} */ c) =>
-								c.repository_url.includes(repo.name)
+						<a href="{git.html_url}/issues?q=is%3Apr+is%3Amerged+author%3Atheyande" class="pr"><img src={merged} alt="">{PRs(
+							foo.contributions.items.filter((/** @type {{ repository_url: string | any[]; }} */ c) =>
+								c.repository_url.includes(git.full_name)
 							), "merged"
 						).length}
                         </a>
-                        <a href="https://github.com/{repo.name}/issues?q=is%3Apr+is%3Aopen+author%3Atheyande" class="pr">
+                        <a href="{git.html_url}/issues?q=is%3Apr+is%3Aopen+author%3Atheyande" class="pr">
                         <img src={open} alt="">{PRs(
-							r.items.filter((/** @type {{ repository_url: string | any[]; }} */ c) =>
-								c.repository_url.includes(repo.name)
+							foo.contributions.items.filter((/** @type {{ repository_url: string | any[]; }} */ c) =>
+								c.repository_url.includes(git.full_name)
 							), "open"
 						).length}
                         </a>
 					</div>
 				</main>
-                {:catch}
-                <p>Failed</p>
-			{/await}
 		{/each}
-	{/await}
 </div>
 
 <style>
