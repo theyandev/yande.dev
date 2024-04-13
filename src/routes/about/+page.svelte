@@ -18,6 +18,8 @@
 			src="https://lanyard.cnrad.dev/api/713805665407205426?showDisplayName=true&idleMessage=Not%20doin%20crap"
 			alt="discordthing"
 		/>
+
+		<p>oh yeah i like cats</p>
 	</section>
 </div>
 
