@@ -1,3 +1,4 @@
+import { env } from "$env/dynamic/private";
 import { gracefulFetch } from "$lib/functions.ts";
 import { json } from "@sveltejs/kit";
 let projects:any = []
@@ -13,9 +14,13 @@ async function updateInfo() {
         [...new Set(r.items.map((i: any) => {
             return i.repository_url
         }))] as string[])
-
+        git = []
         projects.forEach(async (repo:any) => {
-            git.push(await gracefulFetch(repo))
+            const repoRes = await gracefulFetch(repo,{headers: {Authorization: `token ${env.GIT_TOKEN}`}})
+            const repoLangs = await gracefulFetch(repo + "/languages",{headers: {Authorization: `token ${env.GIT_TOKEN}`}})
+          
+            git.push({...( repoRes ),languages:{total:Object.entries(repoLangs).map(([key, value]) => value).toSpliced(2).reduce(
+                (accumulator:any, currentValue:any) => accumulator + currentValue),langs:Object.entries(repoLangs).map(([key, value]) => [key, value]).toSpliced(2)}})
          })
 
          a = {
