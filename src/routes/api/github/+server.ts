@@ -5,7 +5,7 @@ const token = env.GIT_TOKEN ?? process.env.GIT_TOKEN
 
 
 let repos: any[] | any = (await gracefulFetch("https://api.github.com/users/theyande/repos", { headers: { Authorization: `token ${token}` } }))
-.toSorted((a: any, b: any): any => new Date(b.updated_at) as unknown as number - (new Date(a.updated_at) as unknown as number))
+.toSorted((a: any, b: any): any => Date.parse(b.updated_at) - (Date.parse(a.updated_at)))
 
 for (let index = 0; index < repos.length; index++) {
     const repoLangs = await gracefulFetch(repos[index].url + "/languages", { headers: { Authorization: `token ${token}` } })
