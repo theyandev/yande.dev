@@ -30,6 +30,7 @@
 <div>
 	<h1>{$page.status}</h1>
 	<p>{quotes[$page.status][Math.floor(Math.random() * quotes[$page.status].length)]}</p>
+	<img src="https://cataas.com/cat" style="height: 400px; border-radius:10px" alt="cat">
 </div>
 
 <style>
