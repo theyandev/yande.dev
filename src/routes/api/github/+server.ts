@@ -3,42 +3,42 @@ import { gracefulFetch } from "$lib/functions.ts";
 import { json } from "@sveltejs/kit";
 const token = env.GIT_TOKEN ?? process.env.GIT_TOKEN
 
-export async function GET() {
 
-    let repos: any[] | any = (await gracefulFetch("https://api.github.com/users/theyande/repos", { headers: { Authorization: `token ${token}` } }))
-        .toSorted((a: any, b: any): any => Date.parse(b.updated_at) - (Date.parse(a.updated_at)))
+let repos: any[] | any = (await gracefulFetch("https://api.github.com/users/theyande/repos", { headers: { Authorization: `token ${token}` } }))
+.toSorted((a: any, b: any): any => Date.parse(b.updated_at) - (Date.parse(a.updated_at)))
 
-    for (let index = 0; index < repos.length; index++) {
-        const repoLangs = await gracefulFetch(repos[index].url + "/languages", { headers: { Authorization: `token ${token}` } })
-        if (repos[index].name == "yande.dev") console.log(Object.entries(repoLangs))
-        repos[index] = {
-            ...repos[index], languages: {
-                total: addArr(Object.entries(repoLangs).map((a) => a[1]) as number[])
-                , langs: repoLangs
-            }
+for (let index = 0; index < repos.length; index++) {
+    const repoLangs = await gracefulFetch(repos[index].url + "/languages", { headers: { Authorization: `token ${token}` } })
+    if (repos[index].name == "yande.dev") console.log(Object.entries(repoLangs))
+    repos[index] = {
+        ...repos[index], languages: {
+            total: addArr(Object.entries(repoLangs).map((a) => a[1]) as number[])
+            , langs: repoLangs
         }
-        if (repos[index].name == "yande.dev") console.log(repos[index].languages.langs);
-
     }
+    if (repos[index].name == "yande.dev") console.log(repos[index].languages.langs);
 
-    let projects: any = []
-    let git: any = []
-    let langs: any[] = []
-    let a = {
-        contributions: await (await fetch(`https://api.github.com/search/issues?q=author:theyande`)).json(),
-        git: git
+}
+
+let projects: any = []
+let git: any = []
+let langs: any[] = []
+let a = {
+    contributions: await (await fetch(`https://api.github.com/search/issues?q=author:theyande`)).json(),
+    git: git
+}
+
+function addArr(arr: number[]) {
+    let t = 0
+    arr.forEach(element => {
+
+        t += element
     }
-
-    function addArr(arr: number[]) {
-        let t = 0
-        arr.forEach(element => {
-
-            t += element
-        }
-        );
-        return t
-    }
-
+    );
+    return t
+}
+let b = { repo: { all: repos }, langs: langs, cont: a }
+async function updateInfo() {
     projects = await fetch(`https://api.github.com/search/issues?q=author:theyande`)
         .then((r) => r.json())
         .then((r) =>
@@ -73,7 +73,12 @@ export async function GET() {
             }
         });
     });
+    b = { repo: { all: repos }, langs: langs, cont: a }
+}
 
-
-    return json({ repo: { all: repos }, langs: langs, cont: a })
+await updateInfo()
+setInterval(updateInfo, 1000 * 60)
+console.log({ repo: { all: repos }, langs: langs, cont: a }.repo.all[0].languages)
+export async function GET() {
+    return json(b)
 }
