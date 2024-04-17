@@ -46,7 +46,7 @@ export async function GET() {
                 return i.repository_url
             }))] as string[])
     git = []
-    projects.forEach(async (repo: any) => {
+   await projects.forEach(async (repo: any) => {
         const repoRes = await gracefulFetch(repo, { headers: { Authorization: `token ${token}` } })
         const repoLangs = await gracefulFetch(repo + "/languages", { headers: { Authorization: `token ${token}` } })
 
