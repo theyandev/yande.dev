@@ -7,7 +7,7 @@
 	import calander from '$lib/images/calander.svg';
 	import code from '$lib/images/code.svg';
 	import filt from '$lib/images/filter.svg';
-	let filtersShown = false;
+ 	let filtersShown = false;
 	let languages = [
 		{
 			n: 'JavaScript',
@@ -230,6 +230,7 @@
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<div class="horiz v-center">
 				<h2>Repositories</h2>
+				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 				<img
 					style="border-radius:5px; opacity: {filtersShown ? '1' : '0.2'};"
 					src={filt}
@@ -373,6 +374,7 @@
 	/* Firefox */
 	input[type='number'] {
 		-moz-appearance: textfield;
+		appearance: textfield;
 	}
 	select {
 		background-color: rgba(0, 0, 0, 0);
@@ -402,13 +404,7 @@
 		color: white;
 		text-decoration: none;
 	}
-	#filterMenu {
-		/* Your styles here */
-	}
-	#filterMenu ul {
-		/* Styles for sub-options */
-	}
-
+	
 	hero {
 		width: 100%;
 	}
