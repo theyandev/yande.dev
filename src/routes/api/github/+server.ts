@@ -2,10 +2,8 @@ import { env } from "$env/dynamic/private";
 import { gracefulFetch } from "$lib/functions.ts";
 import { json } from "@sveltejs/kit";
 const token = env.GIT_TOKEN ?? process.env.GIT_TOKEN
-
-
+let done = false
 let repos: any[] | any
-
 let projects: any = []
 let git: any = []
 let langs: any[] = []
@@ -75,11 +73,13 @@ async function updateInfo() {
             }
         });
     });
-
+    b = { repo: { all: repos }, langs: langs, cont: a }
+    done = true
 }
 
-await updateInfo()
-export async function GET() {
-    b = { repo: { all: repos }, langs: langs, cont: a }
-    return json(b)
+ updateInfo()
+
+ export async function GET() {
+
+    return json(done ? b : "Data is still loading! check back in a few seconds")
 }
