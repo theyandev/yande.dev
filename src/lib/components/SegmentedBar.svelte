@@ -27,9 +27,16 @@
 		display: flex;
 		width: calc(100% - 20px);
 		height: 2px;
+		
 	}
 
+
 	.segmented-bar > div {
-		height: 100%;
+		height: 2px;
+		transition: all 0.5s;
+	}
+	.segmented-bar > div:hover {
+		height: 6px;
+		transform: translateY(-2px);
 	}
 </style>
