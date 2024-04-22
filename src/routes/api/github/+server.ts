@@ -77,7 +77,7 @@ async function updateInfo() {
     done = true
 }
 
- updateInfo()
+ await updateInfo()
 
  export async function GET() {
 
