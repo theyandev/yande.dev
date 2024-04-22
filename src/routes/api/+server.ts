@@ -6,6 +6,3 @@ export function GET() {
         routes: ["/api","/api/github"]
      })
 }
-
-console.log("hi")
-console.log("hi2")

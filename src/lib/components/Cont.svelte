@@ -2,11 +2,15 @@
 	import merged from '$lib/images/merged.svg';
 	import open from '$lib/images/open.svg';
 	import issue from '$lib/images/issue.svg';
+	import SegmentedBar from './SegmentedBar.svelte';
 	/**
 	 * @type {any}
 	 */
 	export let foo;
-
+	/**
+	 * @type {any}
+	 */
+	export let rawlangs;
 	/**
 	 * @param {string | number | boolean} name
 	 */
@@ -19,6 +23,7 @@
 	 * @param {any[]} array
 	 * @param {string} status
 	 */
+
 	function PRs(array, status) {
 		return array
 			.filter((c) => c.pull_request != undefined)
@@ -48,9 +53,7 @@
 				<img class="icon" src={git.owner?.avatar_url} alt="" />
 				<div class="vertical">
 					<div class="horiz">
-						<a class="name" href={git.html_url}>{git.name}</a>{#each git.languages.langs.toSpliced(2) as lang}
-							<div class="lang">{lang[0]} {Math.round((lang[1] / git.languages.total) * 100)}%</div>
-						{/each}
+						<a class="name" href={git.html_url}>{git.name}</a>
 					</div>
 					<a class="owner" href={git.owner?.html_url}>{git.owner?.login}</a>
 				</div>
@@ -87,6 +90,11 @@
 					).length}
 				</a>
 			</div>
+			<SegmentedBar
+				segments={Object.entries(git.languages.langs)}
+				{rawlangs}
+				total={git.languages.total}
+			/>
 		</main>
 	{/each}
 </div>
@@ -160,6 +168,4 @@
 		display: flex;
 		flex-direction: row;
 	}
-
-
 </style>

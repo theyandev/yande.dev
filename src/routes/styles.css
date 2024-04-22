@@ -36,5 +36,62 @@ a:hover {
 	text-decoration: underline;
 }
 
+[tooltip] {
+	position: relative; /* Required for positioning the tooltip */
+	cursor: pointer;
+  }
+  
+  /* Tooltip text */
+  [tooltip]::after {
+	content: attr(tooltip); /* Display the tooltip text */
+	position: absolute;
+	bottom: 100%; /* Position above the element */
+	left: 50%; /* Start at the center of the element */
+	transform: translateX(-50%) translateY(-5px); /* Center the tooltip */
+	white-space: nowrap; /* Keep the tooltip on a single line */
+	z-index: 10;
+	background: linear-gradient(
+		to right,
+		transparent,
+		#333 10%,
+		#333 90%,
+		transparent
+	  );
+	color: #fff; /* Tooltip text color */
+	padding: 2px 10px; /* Tooltip padding */
+	font-size: 14px; /* Tooltip font size */
+	line-height: 1.4;
+	opacity: 0; /* Initially hidden */
+	transition: opacity 0.3s, visibility 0.3s; /* Fade-in effect */
+	pointer-events: none; /* Tooltip should not be clickable */
+	visibility: hidden; /* Initially not visible */
+	text-align: center; /* Center the text inside the tooltip */
+	
+  }
+  
+  /* Tooltip arrow */
+  /* [tooltip]::before {
+	content: '';
+	position: absolute;
+	bottom: 100%; 
+	left: 50%;
+	transform: translateX(-50%) translateY(0px); /* Align center and adjust for border 
+	border-style: solid;
+	border-width: 5px 5px 0; /* Arrow size 
+	border-color: #333 transparent transparent transparent; /* Arrow color 
+	opacity: 0; /* Initially hidden
+	transition: opacity 0.3s, visibility 0.3s, height 0.3s; /* Fade-in effect
+	pointer-events: none; /* Arrow should not be clickable
+	visibility: hidden; /* Initially not visible 
+	overflow: hidden;
+	
+	
+  } */
+  
+  /* Show the tooltip when hovering over the element */
+  [tooltip]:hover::after,
+  [tooltip]:hover::before {
+	opacity: 1;
+	visibility: visible;
 
-
+  }

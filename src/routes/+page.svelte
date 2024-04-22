@@ -225,6 +225,7 @@
 					},
 					git: []
 				}}
+				rawlangs={projects.langMap}
 			/>
 
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -330,6 +331,7 @@
 				foo={filteredRepos ?? {
 					all: []
 				}}
+				rawlangs={projects.langMap}
 			/>
 		{:catch a}
 			<p>Failed to load contributions</p>

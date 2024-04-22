@@ -3,10 +3,15 @@
 	import star from '$lib/images/star.svg';
 	import fork from '$lib/images/fork.svg';
 	import issue from '$lib/images/issue.svg';
+	import SegmentedBar from './SegmentedBar.svelte';
 	/**
 	 * @type {any}
 	 */
 	export let foo;
+	/**
+	 * @type {any}
+	 */
+	 export let rawlangs
 </script>
 
 <div class="stuff">
@@ -18,9 +23,6 @@
 					<div class="horiz">
 						<a class="name" href={git.html_url}>{git.name}</a>
 						
-						{#each Object.entries(git.languages.langs).toSpliced(2) as lang}
-							<div class="lang">{lang[0]} {Math.round((lang[1] / git.languages.total) * 100)}%</div>
-						{/each}
 					</div>
 					<a class="owner" href={git.owner?.html_url}>{git.owner?.login}{#if git.fork}
 						<img style="height: 0.5rem;" src={fork} alt="" />
@@ -47,6 +49,7 @@
 					<img src={issue} alt="" />{git.open_issues}
 				</a>
 			</div>
+			<SegmentedBar segments={Object.entries(git.languages.langs)} rawlangs={rawlangs} total={git.languages.total}/>
 		</main>
 	{/each}
 </div>

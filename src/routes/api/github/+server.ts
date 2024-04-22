@@ -1,6 +1,7 @@
 import { env } from "$env/dynamic/private";
 import { gracefulFetch } from "$lib/functions.ts";
 import { json } from "@sveltejs/kit";
+import {load as loadYAML} from "js-yaml"
 const token = env.GIT_TOKEN ?? process.env.GIT_TOKEN
 let done = false
 let repos: any[] | any
@@ -9,6 +10,21 @@ let git: any = []
 let langs: any[] = []
 let a: any
 
+const langYML = await (await fetch("https://raw.githubusercontent.com/github/linguist/master/lib/linguist/languages.yml")).text()
+const langJSON: {[key:string]:any} = keysToLowercase(loadYAML(langYML) as any)
+function keysToLowercase(obj: { [x: string]: any; }) {
+    // Create a new object to store the transformed key-value pairs
+    const newObj: { [x: string]: any; } = {};
+  
+    // Iterate over the keys of the original object
+    Object.keys(obj).forEach(key => {
+      // Convert each key to lowercase and use it to store the corresponding value
+      newObj[key.toLowerCase()] = obj[key];
+    });
+  
+    // Return the new object with all lowercase keys
+    return newObj;
+  }
 function addArr(arr: number[]) {
     let t = 0
     arr.forEach(element => {
@@ -18,7 +34,7 @@ function addArr(arr: number[]) {
     );
     return t
 }
-let b = { repo: { all: repos }, langs: langs, cont: a }
+let b = { repo: { all: repos }, langs: langs, cont: a, langMap: langJSON }
 async function updateInfo() {
     a = {
         contributions: await (await fetch(`https://api.github.com/search/issues?q=author:theyande`)).json(),
@@ -52,8 +68,8 @@ async function updateInfo() {
 
         git.push({
             ...(repoRes), languages: {
-                total: Object.entries(repoLangs).map(([key, value]) => value).reduce(
-                    (accumulator: any, currentValue: any) => accumulator + currentValue), langs: Object.entries(repoLangs)
+                total: addArr(Object.entries(repoLangs).map((a) => a[1]) as number[])
+                , langs: repoLangs
             }
         })
     })
@@ -73,7 +89,7 @@ async function updateInfo() {
             }
         });
     });
-    b = { repo: { all: repos }, langs: langs, cont: a }
+    b = { repo: { all: repos }, langs: langs, cont: a, langMap : langJSON }
     done = true
 }
 
@@ -81,5 +97,5 @@ async function updateInfo() {
 
  export async function GET() {
 
-    return json(done ? b : "Data is still loading! check back in a few seconds")
+    return json(done ? b : b)
 }
