@@ -69,25 +69,7 @@ a:hover {
 	
   }
   
-  /* Tooltip arrow */
-  /* [tooltip]::before {
-	content: '';
-	position: absolute;
-	bottom: 100%; 
-	left: 50%;
-	transform: translateX(-50%) translateY(0px); /* Align center and adjust for border 
-	border-style: solid;
-	border-width: 5px 5px 0; /* Arrow size 
-	border-color: #333 transparent transparent transparent; /* Arrow color 
-	opacity: 0; /* Initially hidden
-	transition: opacity 0.3s, visibility 0.3s, height 0.3s; /* Fade-in effect
-	pointer-events: none; /* Arrow should not be clickable
-	visibility: hidden; /* Initially not visible 
-	overflow: hidden;
-	
-	
-  } */
-  
+
   /* Show the tooltip when hovering over the element */
   [tooltip]:hover::after,
   [tooltip]:hover::before {

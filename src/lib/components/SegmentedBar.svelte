@@ -15,7 +15,7 @@
 
 <div class="segmented-bar">
 	{#each segments as segment}
-		<div tooltip={segment[0] +" " + Math.round((segment[1] / total) * 100)+ "%"} style="width: {(segment[1] / total) * 100}%; background-color: {rawlangs[segment[0].toLowerCase()]?.color};"></div>
+		<div tooltip={segment[0] + " " + Math.round((segment[1] / total) * 100)+ "%"} style="width: {(segment[1] / total) * 100}%; background-color: {rawlangs[segment[0].toLowerCase()]?.color};"></div>
 	{/each}
 </div>
 
@@ -38,5 +38,7 @@
 	.segmented-bar > div:hover {
 		height: 6px;
 		transform: translateY(-2px);
+		border-radius: 2px;
 	}
+	
 </style>
