@@ -153,11 +153,11 @@
 	}
 	main {
 		position: relative;
-		min-height: 6rem;
-		border-color: rgb(197, 197, 197);
+		min-height: 0rem;
+		border-color: rgb(92, 92, 92);
 		border-width: 2px;
 		border-style: solid;
-		border-radius: 10px;
+		border-radius: 5px;
 		padding: 5px;
 	}
 	.vertical {

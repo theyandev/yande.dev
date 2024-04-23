@@ -55,16 +55,7 @@
 </div>
 
 <style>
-	.lang {
-		font-size: 0.6rem;
-		display: flex;
-		align-items: center;
-		height: 100%;
-		margin-left: 5px;
-		background-color: rgb(76, 76, 76);
-		border-radius: 1rem;
-		padding: 0px 5px;
-	}
+	
 	.pr {
 		margin: 0 2px;
 		border: 1px solid rgba(255, 255, 255, 0);
@@ -113,7 +104,7 @@
 		border-color: rgb(92, 92, 92);
 		border-width: 2px;
 		border-style: solid;
-		border-radius: 10px;
+		border-radius: 5px;
 		padding: 5px;
 	}
 	.vertical {

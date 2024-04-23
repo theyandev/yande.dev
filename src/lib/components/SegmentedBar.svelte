@@ -1,5 +1,5 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
 	/**
 	 * @type {any[]}
@@ -15,30 +15,58 @@
 
 <div class="segmented-bar">
 	{#each segments as segment}
-		<div tooltip={segment[0] + " " + Math.round((segment[1] / total) * 100)+ "%"} style="width: {(segment[1] / total) * 100}%; background-color: {rawlangs[segment[0].toLowerCase()]?.color};"></div>
+		<div
+			tooltip={segment[0] + ' ' + Math.round((segment[1] / total) * 100) + '%'}
+			style="width: {(segment[1] / total) * 100}%; background-color: {rawlangs[
+				segment[0].toLowerCase()
+			]?.color};"
+		></div>
 	{/each}
 </div>
 
 <style>
 	.segmented-bar {
 		position: absolute;
-		bottom: -2px;
-        left:10px ;
+		bottom: -4px;
+		left: 5px;
 		display: flex;
-		width: calc(100% - 20px);
-		height: 2px;
-		
+		width: calc(100% - 10px);
+		height: 6px;
 	}
-
-
 	.segmented-bar > div {
-		height: 2px;
 		transition: all 0.5s;
 	}
+	.segmented-bar > div:first-child {
+		border-radius: 2px 0px 0px 2px;
+	}
+
+	.segmented-bar > div:last-child {
+		border-radius: 0px 2px 2px 0px;
+	}
+
+	.segmented-bar > div:only-child {
+		border-radius: 2px 2px 2px 2px;
+	}
+	.segmented-bar > div {
+		height: 100%;
+	}
 	.segmented-bar > div:hover {
-		height: 6px;
+		height: 10px;
 		transform: translateY(-2px);
+	}
+	.segmented-bar > div:first-child:hover {
+		border-radius: 4px 2px 2px 4px;
+	}
+
+	.segmented-bar > div:not(:first-child):not(:last-child):hover {
 		border-radius: 2px;
 	}
-	
+
+	.segmented-bar > div:last-child:hover {
+		border-radius: 2px 4px 4px 2px;
+	}
+
+	.segmented-bar > div:only-child:hover {
+		border-radius: 4px;
+	}
 </style>
