@@ -62,7 +62,7 @@
 		/>
 
 		<p>oh yeah i like cats</p>
-		<img src="https://cataas.com/cat" alt="">
+		<img src="https://cataas.com/cat" style="height: 400px; border-radius:10px" alt="cat">
 	</section>
 </div>
 
