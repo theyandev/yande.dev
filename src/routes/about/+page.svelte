@@ -1,7 +1,7 @@
 <script>
 	import { gracefulFetch } from '$lib/functions';
 
-	let pPage = gracefulFetch('https://en.pronouns.page/api/profile/get/yande?version=2');
+	let pPage = gracefulFetch('/api/pronounpage');
 </script>
 
 <svelte:head>
