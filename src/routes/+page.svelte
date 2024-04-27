@@ -7,7 +7,7 @@
 	import calander from '$lib/images/calander.svg';
 	import code from '$lib/images/code.svg';
 	import filt from '$lib/images/filter.svg';
- 	let filtersShown = false;
+	let filtersShown = false;
 	let languages = [
 		{
 			n: 'JavaScript',
@@ -127,7 +127,7 @@
 				return true;
 		}
 	}
-	let resolved = false;
+	let resolved = "f";
 	let projects: Promise<any> | any = {
 		cont: {
 			contributions: {
@@ -144,9 +144,11 @@
 	let IncludeForks = false;
 	onMount(() => {
 		gracefulFetch(`/api/github`).then((a) => {
-			resolved = true;
+			resolved = "t";
 			projects = a;
-		});
+		}).catch(()=>{
+			resolved="e"
+		})
 		setInterval(() => {
 			filteredRepos = a(repoFilters, projects, { filterValue });
 			IncludeForks = repoFilters.some(
@@ -208,136 +210,142 @@
 		</div>
 	</hero>
 	<section class="center">
-		{#await projects}
-			<h2>Fetching Contributions & Repositories</h2>
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<!-- svelte-ignore a11y-missing-attribute -->
-			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-			<!-- svelte-ignore a11y-missing-attribute -->
-			<!-- svelte-ignore a11y-missing-attribute -->
-			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-		{:then projects}
-			<h2>Contributions</h2>
-			<Cont
-				foo={projects?.cont ?? {
-					contributions: {
-						total_count: 0,
-						incomplete_results: false,
-						items: []
-					},
-					git: []
-				}}
-				rawlangs={projects.langMap}
-			/>
-
-			<!-- svelte-ignore a11y-click-events-have-key-events -->
-			<div class="horiz v-center">
-				<h2>Repositories</h2>
+		{#if resolved == "t"}
+			{#await projects}
+				<h2>Fetching Contributions & Repositories</h2>
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-missing-attribute -->
 				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-				<img
-					style="border-radius:5px; opacity: {filtersShown ? '1' : '0.2'};"
-					src={filt}
-					alt="filters"
-					on:click={() => {
-						filtersShown = !filtersShown;
-						if (getOption({ o: 'fork', d: false })) toggleOption({ o: 'fork', d: false });
-						filterUnit = 'none';
-						filterValue = 0;
-						repoFilters = repoFilters.filter((a) => a.o != 'lang');
+				<!-- svelte-ignore a11y-missing-attribute -->
+				<!-- svelte-ignore a11y-missing-attribute -->
+				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+			{:then projects}
+				<h2>Contributions</h2>
+				<Cont
+					foo={projects?.cont ?? {
+						contributions: {
+							total_count: 0,
+							incomplete_results: false,
+							items: []
+						},
+						git: []
 					}}
+					rawlangs={projects.langMap}
 				/>
-			</div>
-			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-			<!-- svelte-ignore a11y-missing-attribute -->
-			{#if filtersShown}
-				<div class="horiz v-center" style="width: 100%;">
-					<!-- svelte-ignore a11y-missing-attribute -->
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
+
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<div class="horiz v-center">
+					<h2>Repositories</h2>
+					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 					<img
-						style="border-radius:5px; opacity: {!IncludeForks ? '1' : '0.2'};"
-						src={fork}
-						on:click={() => toggleOption({ o: 'fork', d: false })}
-					/>
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div
-						class="horiz"
-						style="border-radius:10px; padding:4px;background-color: {filterUnit == 'none'
-							? 'rgba(0,0,0,0)'
-							: 'rgba(200,200,0,0.1)'};"
-					>
-						<img
-							style="border-radius:5px; opacity: {filterUnit != 'none' ? '1' : '0.2'};"
-							src={calander}
-							on:click={() => {
-								filterUnit = filterUnit == 'none' ? '' : 'none';
-							}}
-						/>
-						{#if filterUnit != 'none'}
-							<div style="margin-right: 4px; display:flex; align-items:center">
-								Updated in the last
-							</div>
-							<input type="number" bind:value={filterValue} min="0" />
-							<select bind:value={filterUnit}>
-								<option value="days">
-									Day{#if filterValue != 1}s{/if}
-								</option>
-								<option value="months">
-									Month{#if filterValue != 1}s{/if}
-								</option>
-								<option value="years">
-									Year{#if filterValue != 1}s{/if}
-								</option>
-							</select>
-						{/if}
-					</div>
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<div
-						class="horiz center"
-						style="border-radius:10px; padding:4px;background-color: {!CodeFiltersShown
-							? 'rgba(0,0,0,0)'
-							: 'rgba(200,0,200,0.1)'};"
-					>
-					<img
-						style="border-radius:5px; opacity: {CodeFiltersShown ? '1' : '0.2'};"
-						src={code}
+						style="border-radius:5px; opacity: {filtersShown ? '1' : '0.2'};"
+						src={filt}
+						alt="filters"
 						on:click={() => {
-							CodeFiltersShown = !CodeFiltersShown;
-							if (!CodeFiltersShown) {
-								repoFilters = repoFilters.filter((a) => a.o != 'lang');
-							}
+							filtersShown = !filtersShown;
+							if (getOption({ o: 'fork', d: false })) toggleOption({ o: 'fork', d: false });
+							filterUnit = 'none';
+							filterValue = 0;
+							repoFilters = repoFilters.filter((a) => a.o != 'lang');
 						}}
 					/>
-					{#if CodeFiltersShown}
-						<!-- svelte-ignore a11y-no-static-element-interactions -->
-						{#each projects.langs as lang}
-							<!-- svelte-ignore a11y-click-events-have-key-events -->
-							<div
-								class="chip"
-								style="padding:2px 5px; background-color: {activeLangFilters.some(
-									(a) => a.toLowerCase() == lang[0].toLowerCase()
-								)
-								? 'rgba(200,0,200,0.5)'
-							: 'rgba(200,0,200,0.1)'};"
-								on:click={() => {
-									toggleOption({ o: 'lang', d: lang[0].toLowerCase() });
-								}}
-							>
-								{lang[0]}
-							</div>
-						{/each}
-					{/if}
-					</div>
 				</div>
-			{/if}
-			<Repos
-				foo={filteredRepos ?? {
-					all: []
-				}}
-				rawlangs={projects.langMap}
-			/>
-		{:catch a}
-			<p>Failed to load contributions</p>
-		{/await}
+				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+				<!-- svelte-ignore a11y-missing-attribute -->
+				{#if filtersShown}
+					<div class="horiz v-center" style="width: 100%;">
+						<!-- svelte-ignore a11y-missing-attribute -->
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<img
+							style="border-radius:5px; opacity: {!IncludeForks ? '1' : '0.2'};"
+							src={fork}
+							on:click={() => toggleOption({ o: 'fork', d: false })}
+						/>
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<div
+							class="horiz"
+							style="border-radius:10px; padding:4px;background-color: {filterUnit == 'none'
+								? 'rgba(0,0,0,0)'
+								: 'rgba(200,200,0,0.1)'};"
+						>
+							<img
+								style="border-radius:5px; opacity: {filterUnit != 'none' ? '1' : '0.2'};"
+								src={calander}
+								on:click={() => {
+									filterUnit = filterUnit == 'none' ? '' : 'none';
+								}}
+							/>
+							{#if filterUnit != 'none'}
+								<div style="margin-right: 4px; display:flex; align-items:center">
+									Updated in the last
+								</div>
+								<input type="number" bind:value={filterValue} min="0" />
+								<select bind:value={filterUnit}>
+									<option value="days">
+										Day{#if filterValue != 1}s{/if}
+									</option>
+									<option value="months">
+										Month{#if filterValue != 1}s{/if}
+									</option>
+									<option value="years">
+										Year{#if filterValue != 1}s{/if}
+									</option>
+								</select>
+							{/if}
+						</div>
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<div
+							class="horiz center"
+							style="border-radius:10px; padding:4px;background-color: {!CodeFiltersShown
+								? 'rgba(0,0,0,0)'
+								: 'rgba(200,0,200,0.1)'};"
+						>
+							<img
+								style="border-radius:5px; opacity: {CodeFiltersShown ? '1' : '0.2'};"
+								src={code}
+								on:click={() => {
+									CodeFiltersShown = !CodeFiltersShown;
+									if (!CodeFiltersShown) {
+										repoFilters = repoFilters.filter((a) => a.o != 'lang');
+									}
+								}}
+							/>
+							{#if CodeFiltersShown}
+								<!-- svelte-ignore a11y-no-static-element-interactions -->
+								{#each projects.langs as lang}
+									<!-- svelte-ignore a11y-click-events-have-key-events -->
+									<div
+										class="chip"
+										style="padding:2px 5px; background-color: {activeLangFilters.some(
+											(a) => a.toLowerCase() == lang[0].toLowerCase()
+										)
+											? 'rgba(200,0,200,0.5)'
+											: 'rgba(200,0,200,0.1)'};"
+										on:click={() => {
+											toggleOption({ o: 'lang', d: lang[0].toLowerCase() });
+										}}
+									>
+										{lang[0]}
+									</div>
+								{/each}
+							{/if}
+						</div>
+					</div>
+				{/if}
+				<Repos
+					foo={filteredRepos ?? {
+						all: []
+					}}
+					rawlangs={projects.langMap}
+				/>
+			{:catch a}
+				<p>Failed to load contributions</p>
+			{/await}
+		{:else if resolved == "f"}
+			<h4>Fetching Contributions & Repositories</h4>
+			{:else}
+			<h4>Error fetching Contributions & Repositories</h4>
+		{/if}
 	</section>
 	<section class="center">
 		<h2>Languages</h2>
@@ -408,7 +416,7 @@
 		color: white;
 		text-decoration: none;
 	}
-	
+
 	hero {
 		width: 100%;
 	}

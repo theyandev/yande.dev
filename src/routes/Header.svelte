@@ -16,15 +16,11 @@
 					<img src={yande} alt="Yande.dev" />
 				</a> 
 			</li>
-			<li aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
-				<a href="/">Home</a>
-			</li>
+			
 			<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
 				<a href="/about">About</a>
 			</li>
-			<li aria-current={$page.url.pathname === '/servers' ? 'page' : undefined}>
-				<a href="/servers">Servers</a>
-			</li>
+		
 			<li aria-current={$page.url.pathname === '/bots' ? 'page' : undefined}>
 				<a href="/bots">Bots</a>
 			</li>
@@ -68,7 +64,7 @@
 	nav {
 		display: flex;
 		justify-content: center;
-		--background: rgb(201, 201, 201);
+		--background: rgb(81, 81, 81);
 		position: fixed;
 		z-index: 10000;
 	}
@@ -109,7 +105,7 @@
 		border-radius: 2px;
 		bottom: 10px; /* Adjust this value to control the distance of the underline from the text */
 		height: 2px; /* Thickness of the underline */
-		background-color: #000; /* Color of the underline */
+		background-color: #ffffff; /* Color of the underline */
 		width: 0; /* Initial width of the pseudo-element */
 		/* transition: width 0.5s ease; */
 		animation: growUnderline 0.5s ease forwards;
@@ -125,7 +121,7 @@
 		height: 100%;
 		align-items: center;
 		padding: 0 0.5rem;
-		color: var(--color-text);
+		color: white;
 		font-weight: 700;
 		font-size: 0.8rem;
 		text-transform: uppercase;

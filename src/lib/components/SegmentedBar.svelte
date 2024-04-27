@@ -30,8 +30,9 @@
 		bottom: -4px;
 		left: 5px;
 		display: flex;
-		width: calc(100% - 10px);
+		width: 0px;
 		height: 6px;
+		animation: long 1s cubic-bezier(.39,.17,.32,1) 0.5s 1 forwards;
 	}
 	.segmented-bar > div {
 		transition: all 0.5s;
@@ -68,5 +69,14 @@
 
 	.segmented-bar > div:only-child:hover {
 		border-radius: 4px;
+	}
+	@keyframes long {
+	from {width:0px;
+		left: 50%;
+	}
+	to {width: calc(100% - 10px);
+		left: 5px;
+		
+	}
 	}
 </style>

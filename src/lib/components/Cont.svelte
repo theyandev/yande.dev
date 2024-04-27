@@ -1,8 +1,19 @@
 <script>
+	import { cubicOut } from 'svelte/easing';
 	import merged from '$lib/images/merged.svg';
 	import open from '$lib/images/open.svg';
 	import issue from '$lib/images/issue.svg';
 	import SegmentedBar from './SegmentedBar.svelte';
+	// @ts-ignore
+	function expand(node, { duration, easing = cubicOut }) {
+		// Include an easing parameter with a default value
+		return {
+			duration,
+			easing, // Apply the easing function to the transition
+			// @ts-ignore
+			css: (t) => `height: ${t * node.scrollHeight}px;`
+		};
+	}
 	/**
 	 * @type {any}
 	 */
@@ -47,48 +58,53 @@
 </script>
 
 <div class="stuff">
-	{#each foo.git as git}
+	{#each foo.git as git (git.id)}
 		<main class="vertical">
-			<div class="horiz">
-				<img class="icon" src={git.owner?.avatar_url} alt="" />
-				<div class="vertical">
-					<div class="horiz">
-						<a class="name" href={git.html_url}>{git.name}</a>
+			<div class="vertical overflow" in:expand={{ duration: 500 }}>
+				<div class="horiz">
+					<img class="icon" src={git.owner?.avatar_url} alt="" />
+					<div class="vertical">
+						<div class="horiz">
+							<a class="name" href={git.html_url}>{git.name}</a>
+						</div>
+						<a class="owner" href={git.owner?.html_url}>{git.owner?.login}</a>
 					</div>
-					<a class="owner" href={git.owner?.html_url}>{git.owner?.login}</a>
 				</div>
-			</div>
-			{#if git.description}
-				<p>{git.description}</p>
-			{:else}
-				<p><i>no description</i></p>
-			{/if}
+				{#if git.description}
+					<p>{git.description}</p>
+				{:else}
+					<p><i>no description</i></p>
+				{/if}
 
-			<div class="stats horiz">
-				<a href="{git.html_url}/issues?q=is%3Aissue+author%3Atheyande" class="pr"
-					><img src={issue} alt="" />{issues(
-						foo.contributions.items.filter((/** @type {{ repository_url: string | any[]; }} */ c) =>
-							c.repository_url.includes(git.full_name)
-						),
-						'any'
-					).length}
-				</a>
-				<a href="{git.html_url}/issues?q=is%3Apr+is%3Amerged+author%3Atheyande" class="pr"
-					><img src={merged} alt="" />{PRs(
-						foo.contributions.items.filter((/** @type {{ repository_url: string | any[]; }} */ c) =>
-							c.repository_url.includes(git.full_name)
-						),
-						'merged'
-					).length}
-				</a>
-				<a href="{git.html_url}/issues?q=is%3Apr+is%3Aopen+author%3Atheyande" class="pr">
-					<img src={open} alt="" />{PRs(
-						foo.contributions.items.filter((/** @type {{ repository_url: string | any[]; }} */ c) =>
-							c.repository_url.includes(git.full_name)
-						),
-						'open'
-					).length}
-				</a>
+				<div class="stats horiz">
+					<a href="{git.html_url}/issues?q=is%3Aissue+author%3Atheyande" class="pr"
+						><img src={issue} alt="" />{issues(
+							foo.contributions.items.filter(
+								(/** @type {{ repository_url: string | any[]; }} */ c) =>
+									c.repository_url.includes(git.full_name)
+							),
+							'any'
+						).length}
+					</a>
+					<a href="{git.html_url}/issues?q=is%3Apr+is%3Amerged+author%3Atheyande" class="pr"
+						><img src={merged} alt="" />{PRs(
+							foo.contributions.items.filter(
+								(/** @type {{ repository_url: string | any[]; }} */ c) =>
+									c.repository_url.includes(git.full_name)
+							),
+							'merged'
+						).length}
+					</a>
+					<a href="{git.html_url}/issues?q=is%3Apr+is%3Aopen+author%3Atheyande" class="pr">
+						<img src={open} alt="" />{PRs(
+							foo.contributions.items.filter(
+								(/** @type {{ repository_url: string | any[]; }} */ c) =>
+									c.repository_url.includes(git.full_name)
+							),
+							'open'
+						).length}
+					</a>
+				</div>
 			</div>
 			<SegmentedBar
 				segments={Object.entries(git.languages.langs)}
@@ -100,16 +116,6 @@
 </div>
 
 <style>
-	.lang {
-		font-size: 0.6rem;
-		display: flex;
-		align-items: center;
-		height: 100%;
-		margin-left: 5px;
-		background-color: rgb(76, 76, 76);
-		border-radius: 1rem;
-		padding: 0px 5px;
-	}
 	.pr {
 		margin: 0 2px;
 		border: 1px solid rgba(255, 255, 255, 0);
@@ -128,8 +134,9 @@
 	.stuff {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-		gap: 10px;
+		gap: 0px;
 		width: 100%;
+		animation: long 1s cubic-bezier(0.39, 0.17, 0.32, 1) 0.5s 1 forwards;
 	}
 
 	.stats {
@@ -152,12 +159,14 @@
 		font-size: 10px;
 	}
 	main {
+		display: block;
 		position: relative;
 		min-height: 0rem;
 		border-color: rgb(92, 92, 92);
 		border-width: 2px;
 		border-style: solid;
-		border-radius: 5px;
+		border-radius: 0px;
+		animation: b 1s cubic-bezier(.39,.17,.32,1) 0.5s 1 forwards;
 		padding: 5px;
 	}
 	.vertical {
@@ -167,5 +176,21 @@
 	.horiz {
 		display: flex;
 		flex-direction: row;
+	}
+	@keyframes long {
+		from {
+			gap: 0px;
+		}
+		to {
+			gap: 10px;
+		}
+	}
+	@keyframes b {
+		from {
+			border-radius: 0px;
+		}
+		to {
+			border-radius: 5px;
+		}
 	}
 </style>

@@ -33,9 +33,9 @@ function addArr(arr: number[]) {
     );
     return t
 }
-let b:any = {}
+let b: any = {}
 async function updateInfo() {
-  const contributions = await gracefulFetch("https://api.github.com/search/issues?q=author:theyande", { headers: { Authorization: `token ${token}` } })
+    const contributions = await gracefulFetch("https://api.github.com/search/issues?q=author:theyande", { headers: { Authorization: `token ${token}` } })
     repos = (await gracefulFetch("https://api.github.com/users/theyande/repos", { headers: { Authorization: `token ${token}` } }))
         .toSorted((a: any, b: any): any => Date.parse(b.updated_at) - (Date.parse(a.updated_at)))
     langs = []
@@ -64,25 +64,39 @@ async function updateInfo() {
             [...new Set(r.items.map((i: any) => {
                 return i.repository_url
             }))] as string[])
-    git = []
-    await projects.forEach(async (repo: any) => {
+    git = [];
+    
+    const fetchPromises = projects.map(async (repo: string) => {
+        const repoLangs = await gracefulFetch(repo + "/languages", {
+            headers: { Authorization: `token ${token}` }
+        });
 
-        const repoLangs = await gracefulFetch(repo + "/languages", { headers: { Authorization: `token ${token}` } })
+        const repoData = await gracefulFetch(repo, {
+            headers: { Authorization: `token ${token}` }
+        });
 
-        await git.push({
-            ...(await gracefulFetch(repo, { headers: { Authorization: `token ${token}` } })), languages: {
-                total: addArr(Object.entries(repoLangs).map((a) => a[1]) as number[])
-                , langs: repoLangs
+        return {
+            ...repoData,
+            languages: {
+                //@ts-ignore
+                total: addArr(Object.entries(repoLangs).map((a) => a[1])),
+                langs: repoLangs
             }
-        })
-    })
+        };
+    });
+
+    // Use Promise.all to wait for all fetchPromises to resolve
+    const gitData = await Promise.all(fetchPromises);
+    git.push(...gitData); // Spread syntax to push all elements of gitData array
 
 
 
-    b = { repo: { all: repos }, langs: langs, cont: {
-        contributions,
-        git: git
-    }, langMap: langJSON }
+    b = {
+        repo: { all: repos }, langs: langs, cont: {
+            contributions,
+            git: git
+        }, langMap: langJSON
+    }
     done = true
 }
 
