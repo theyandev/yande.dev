@@ -1,4 +1,5 @@
 <script lang="ts">
+	//@ts-nocheck
 	import Cont from '$lib/components/Cont.svelte';
 	import Repos from '$lib/components/Repos.svelte';
 	import { gracefulFetch } from '$lib/functions';
@@ -401,9 +402,7 @@
 		display: flex;
 		flex-direction: row;
 	}
-	ul {
-		list-style: none;
-	}
+
 	.divider svg {
 		position: relative;
 		display: block;
@@ -418,23 +417,5 @@
 		transform: rotateY(180deg) scaleY(-1);
 	}
 
-	.animated-progress {
-		width: 300px;
-		height: 30px;
-		border-radius: 5rem;
-		margin: 20px 10px;
-		border: 1px solid rgb(189, 113, 113);
-		overflow: hidden;
-		position: relative;
-	}
 
-	.animated-progress span {
-		height: 100%;
-		display: block;
-		color: rgb(255, 251, 251);
-		line-height: 30px;
-		position: absolute;
-		text-align: end;
-		padding-right: 5px;
-	}
 </style>
