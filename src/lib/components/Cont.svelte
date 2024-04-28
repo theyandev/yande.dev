@@ -58,7 +58,7 @@
 </script>
 
 <div class="stuff">
-	{#each foo.git as git (git.id)}
+	{#each foo.git as git }
 		<main class="vertical">
 			<div class="vertical overflow" in:expand={{ duration: 500 }}>
 				<div class="horiz">
@@ -176,6 +176,9 @@
 	.horiz {
 		display: flex;
 		flex-direction: row;
+	}
+	.overflow {
+		overflow: hidden;
 	}
 	@keyframes long {
 		from {

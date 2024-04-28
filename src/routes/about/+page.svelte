@@ -1,4 +1,5 @@
 <script>
+	import Load from '$lib/components/Load.svelte';
 	import { gracefulFetch } from '$lib/functions';
 
 	let pPage = gracefulFetch('/api/pronounpage');
@@ -13,7 +14,7 @@
 <div class="text-column center">
 	<section class="center" style="margin-top: 60px;">
 		{#await pPage}
-			<h1>Fetching Info...</h1>
+			<h1>Fetching Info...</h1><Load/>
 		{:then pPage}
 			<h1>About</h1>
 			<div class="horiz">

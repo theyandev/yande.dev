@@ -58,16 +58,18 @@ async function updateInfo() {
 
 
     })
-    projects = await fetch(`https://api.github.com/search/issues?q=author:theyande`)
-        .then((r) => r.json())
-        .then((r) =>
-            [...new Set(r.items.map((i: any) => {
+    projects = 
+            [...new Set(contributions.items.map((i: any) => {
                 return i.repository_url
-            }))] as string[])
+            }))] as string[]
     git = [];
     
     const fetchPromises = projects.map(async (repo: string) => {
         const repoLangs = await gracefulFetch(repo + "/languages", {
+            headers: { Authorization: `token ${token}` }
+        });
+
+        const repoCommits = await gracefulFetch(repo + "/commits?author=theyande", {
             headers: { Authorization: `token ${token}` }
         });
 
@@ -81,7 +83,8 @@ async function updateInfo() {
                 //@ts-ignore
                 total: addArr(Object.entries(repoLangs).map((a) => a[1])),
                 langs: repoLangs
-            }
+            },
+            commits: repoCommits
         };
     });
 

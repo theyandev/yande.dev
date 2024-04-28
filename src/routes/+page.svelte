@@ -7,6 +7,7 @@
 	import calander from '$lib/images/calander.svg';
 	import code from '$lib/images/code.svg';
 	import filt from '$lib/images/filter.svg';
+	import Load from '$lib/components/Load.svelte';
 	let filtersShown = false;
 	let languages = [
 		{
@@ -213,12 +214,7 @@
 		{#if resolved == "t"}
 			{#await projects}
 				<h2>Fetching Contributions & Repositories</h2>
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-missing-attribute -->
-				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-				<!-- svelte-ignore a11y-missing-attribute -->
-				<!-- svelte-ignore a11y-missing-attribute -->
-				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+				<Load/>
 			{:then projects}
 				<h2>Contributions</h2>
 				<Cont
@@ -343,9 +339,12 @@
 			{/await}
 		{:else if resolved == "f"}
 			<h4>Fetching Contributions & Repositories</h4>
+			<Load/>
 			{:else}
 			<h4>Error fetching Contributions & Repositories</h4>
+			
 		{/if}
+		
 	</section>
 	<section class="center">
 		<h2>Languages</h2>
