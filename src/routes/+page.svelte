@@ -13,14 +13,12 @@
 	let filtersShown = false;
 
 	function addArr(arr: number[]) {
-    let t = 0
-    arr.forEach(element => {
-
-        t += element
-    }
-    );
-    return t
-}
+		let t = 0;
+		arr.forEach((element) => {
+			t += element;
+		});
+		return t;
+	}
 	let repoFilters: { o: any; d: any }[] = [{ o: 'date', d: '' }];
 
 	let activeLangFilters: any[] = [];
@@ -65,7 +63,7 @@
 					: Date.parse(item.updated_at) / 1000 - getUnixTimestampAgo(filterValue, filterUnit) > 0;
 			case 'lang': {
 				return Object.keys(item.languages.langs).some((a: any) => {
-					return a.toLowerCase() == filter.d.toLowerCase();
+					return a.toLowerCase() == filter.toLowerCase();
 				});
 			}
 			case 'fork':
@@ -74,36 +72,11 @@
 				return true;
 		}
 	}
-	let resolved = "f";
-	let projects: Promise<any> | any = {
-		cont: {
-			contributions: {
-				total_count: 0,
-				incomplete_results: false,
-				items: []
-			},
-			git: []
-		},
-		repo: {
-			all: []
-		}
-	};
+	import type { Pagedata } from './$types';
+	
+	export let data: Pagedata
+
 	let IncludeForks = false;
-	onMount(() => {
-		gracefulFetch(`/api/github`).then((a) => {
-			resolved = "t";
-			projects = a;
-		}).catch(()=>{
-			resolved="e"
-		})
-		setInterval(() => {
-			filteredRepos = a(repoFilters, projects, { filterValue });
-			IncludeForks = repoFilters.some(
-				(item: { o: any; d: any }) => item.o === 'fork' && item.d === false
-			);
-			activeLangFilters = repoFilters.filter((a) => a.o == 'lang').map((a) => a.d);
-		}, 100);
-	});
 
 	function a(a: any, b: any, v: any) {
 		return b.repo.all.filter((item: any) => {
@@ -114,6 +87,15 @@
 			return acc;
 		});
 	}
+	onMount(() => {
+		setInterval(() => {
+			filteredRepos = a(repoFilters, data.projects, { filterValue });
+			IncludeForks = repoFilters.some(
+				(item: { o: any; d: any }) => item.o === 'fork' && item.d === false
+			);
+			activeLangFilters = repoFilters.filter((a) => a.o == 'lang').map((a) => a.d);
+		}, 100);
+	});
 	let filteredRepos: any[] = [];
 
 	// let repos = gracefulFetch(`/api/github/repos`)
@@ -128,7 +110,7 @@
 	<hero class="center">
 		<div class="divider">
 			<svg
-				data-name="Layer 1"
+				data.name="Layer 1"
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 1200 120"
 				preserveAspectRatio="none"
@@ -143,7 +125,7 @@
 		<h1 class="name" style="background-color: white ; color: black;">Hi, Im Yande</h1>
 		<div class="divider v-flip">
 			<svg
-				data-name="Layer 1"
+				data.name="Layer 1"
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 1200 120"
 				preserveAspectRatio="none"
@@ -157,10 +139,10 @@
 		</div>
 	</hero>
 	<section class="center">
-		{#if resolved == "t"}
-			{#await projects}
+		{#if data.resolved == 't'}
+			{#await data.projects}
 				<h2>Fetching Contributions & Repositories</h2>
-				<Load/>
+				<Load />
 			{:then projects}
 				<h2>Contributions</h2>
 				<Cont
@@ -281,25 +263,23 @@
 					rawlangs={projects.langMap}
 				/>
 				<h2>Languages</h2>
-		<p>Here are the languages I use and how much I use them</p>
-	<Seg segments={projects.usedLangs} rawlangs={projects.langMap} total={addArr(projects.usedLangs.map((a) => a[1]))}/> 
-	
-		
+				<p>Here are the languages I use and how much I use them</p>
+				<Seg
+					segments={projects.usedLangs}
+					rawlangs={projects.langMap}
+					total={addArr(projects.usedLangs.map((a) => a[1]))}
+				/>
 			{:catch a}
 				<p>Failed to load contributions</p>
 			{/await}
-		{:else if resolved == "f"}
+		{:else if data.resolved == 'f'}
 			<h4>Fetching Contributions & Repositories</h4>
-			<Load/>
-			{:else}
+			<Load />
+		{:else}
 			<h4>Error fetching Contributions & Repositories</h4>
-			
 		{/if}
-		
 	</section>
-	<section class="center">
-		
-	</section>
+	<section class="center"></section>
 </main>
 
 <style>
@@ -416,6 +396,4 @@
 	.v-flip {
 		transform: rotateY(180deg) scaleY(-1);
 	}
-
-
 </style>

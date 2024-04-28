@@ -2,7 +2,7 @@ export async function gracefulFetch<T = any>(apiUrl: string, headers?: any, retr
 	return await fetch(apiUrl, headers)
 		.then((response) => response.json()).then(data => {
 			
-				return data; // data is ready, resolve with this data
+				return data; 
 			
 })}
 
