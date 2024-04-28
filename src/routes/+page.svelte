@@ -8,73 +8,18 @@
 	import code from '$lib/images/code.svg';
 	import filt from '$lib/images/filter.svg';
 	import Load from '$lib/components/Load.svelte';
+	import Seg from '$lib/components/Seg.svelte';
 	let filtersShown = false;
-	let languages = [
-		{
-			n: 'JavaScript',
-			f: 95,
-			c: '#f7df1e',
-			t: true
-		},
-		{
-			n: 'TypeScript',
-			f: 90,
-			c: '#007acc',
-			t: false
-		},
-		{
-			n: 'Python',
-			f: 30,
-			c: '#FFE873',
-			t: true
-		},
-		{
-			n: 'HTML',
-			f: 90,
-			c: '#F16529',
-			t: false
-		},
-		{
-			n: 'CSS',
-			f: 70,
-			c: '#264de4',
-			t: false
-		},
-		{
-			n: 'Java',
-			f: 0,
-			c: '#f89820',
-			t: false
-		},
-		{
-			n: 'C',
-			f: 0,
-			c: '#004283',
-			t: false
-		},
-		{
-			n: 'C#',
-			f: 0,
-			c: '#5731d7',
-			t: false
-		},
-		{
-			n: 'C++',
-			f: 0,
-			c: '#00589d',
-			t: false
-		},
 
-		{
-			n: 'Ruby',
-			f: 0,
-			c: '#8c0601',
-			t: false
-		}
-	]
-		.toSorted((a, b) => b.f - a.f)
-		.filter((a) => a.f > 0);
+	function addArr(arr: number[]) {
+    let t = 0
+    arr.forEach(element => {
 
+        t += element
+    }
+    );
+    return t
+}
 	let repoFilters: { o: any; d: any }[] = [{ o: 'date', d: '' }];
 
 	let activeLangFilters: any[] = [];
@@ -334,6 +279,11 @@
 					}}
 					rawlangs={projects.langMap}
 				/>
+				<h2>Languages</h2>
+		<p>Here are the languages I use and how much I use them</p>
+	<Seg segments={projects.usedLangs} rawlangs={projects.langMap} total={addArr(projects.usedLangs.map((a) => a[1]))}/> 
+	
+		
 			{:catch a}
 				<p>Failed to load contributions</p>
 			{/await}
@@ -347,22 +297,7 @@
 		
 	</section>
 	<section class="center">
-		<h2>Languages</h2>
-		<p>here are some of the languages I know</p>
-		<ul>
-			{#each languages as lang}
-				<li>
-					{lang.n}
-					<div class="animated-progress">
-						<span
-							style="width: {lang.f}%; background-color:{lang.c}; color:{!lang.t
-								? 'white'
-								: 'black'};">{lang.f}%</span
-						>
-					</div>
-				</li>
-			{/each}
-		</ul>
+		
 	</section>
 </main>
 

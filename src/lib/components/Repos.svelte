@@ -98,7 +98,7 @@
 		grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
 		gap: 0px;
 		width: 100%;
-		overflow: hidden;
+		
 		animation: long 1s cubic-bezier(.39,.17,.32,1) 0.5s 1 forwards;
 	}
 	.stuff > main {

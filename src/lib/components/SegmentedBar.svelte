@@ -43,6 +43,7 @@
 
 	.segmented-bar > div:last-child {
 		border-radius: 0px 2px 2px 0px;
+		
 	}
 
 	.segmented-bar > div:only-child {

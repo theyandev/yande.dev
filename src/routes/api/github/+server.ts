@@ -41,6 +41,9 @@ async function updateInfo() {
     langs = []
     await repos.forEach(async (_: any, index: string | number, repos: { [x: string]: any; }) => {
         const repoLangs = await gracefulFetch(repos[index].url + "/languages", { headers: { Authorization: `token ${token}` } })
+        const repoCommits = await gracefulFetch(repos[index].url + "/commits?author=theyande", {
+            headers: { Authorization: `token ${token}` }
+        });
         Object.entries(repoLangs).forEach((lang: any[]) => {
             let index = langs.map((lang: any) => lang[0]).indexOf(lang[0])
             if (index != -1) {
@@ -53,17 +56,18 @@ async function updateInfo() {
             ...repos[index], languages: {
                 total: addArr(Object.entries(repoLangs).map((a) => a[1]) as number[])
                 , langs: repoLangs
-            }
+            },
+            commits: repoCommits
         }
 
 
     })
-    projects = 
-            [...new Set(contributions.items.map((i: any) => {
-                return i.repository_url
-            }))] as string[]
+    projects =
+        [...new Set(contributions.items.map((i: any) => {
+            return i.repository_url
+        }))] as string[]
     git = [];
-    
+
     const fetchPromises = projects.map(async (repo: string) => {
         const repoLangs = await gracefulFetch(repo + "/languages", {
             headers: { Authorization: `token ${token}` }
@@ -92,14 +96,30 @@ async function updateInfo() {
     const gitData = await Promise.all(fetchPromises);
     git.push(...gitData); // Spread syntax to push all elements of gitData array
 
-
-
+let usedLangs: any[][] = [];
+const a = [...repos, ...git];
+a.forEach((repo) => {
+    console.log(Object.entries(repo.languages.langs));
+    
+    if (repo.fork) if (repo.commits.length < 1) return
+    Object.entries(repo.languages.langs).forEach((lang: any[]) => {
+        let index = usedLangs.map((lang: any) => lang[0]).indexOf(lang[0])
+        if (index != -1) {
+            usedLangs[index][1] += lang[1]
+        } else {
+            usedLangs.push(lang)
+        }
+    });
+})
+usedLangs.sort((a,b) => a[1] - b[1])
     b = {
         repo: { all: repos }, langs: langs, cont: {
             contributions,
             git: git
-        }, langMap: langJSON
+        }, langMap: langJSON, usedLangs
     }
+
+
     done = true
 }
 
