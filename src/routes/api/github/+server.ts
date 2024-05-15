@@ -2,6 +2,7 @@ import { env } from "$env/dynamic/private";
 import { gracefulFetch } from "$lib/functions.ts";
 import { json } from "@sveltejs/kit";
 import { load as loadYAML } from "js-yaml"
+import { marked } from "marked";
 const token = env.GIT_TOKEN ?? process.env.GIT_TOKEN
 let done = false
 let repos: any[] | any
@@ -36,6 +37,15 @@ function addArr(arr: number[]) {
 let b: any = {}
 async function updateInfo() {
     const contributions = await gracefulFetch("https://api.github.com/search/issues?q=author:theyande", { headers: { Authorization: `token ${token}` } })
+    const items = contributions.items.map(async (c: { body: any; pull_request: any; }) => ({
+        ...c, parsedBody: marked.parse(c.body ?? ""), pullData: (c.pull_request ? await gracefulFetch(c.pull_request.url, { headers: { Authorization: `token ${token}` } }) : undefined)
+    }))
+
+
+    contributions.items = await Promise.all(items)
+
+    console.log(contributions.items)
+
     repos = (await gracefulFetch("https://api.github.com/users/theyande/repos", { headers: { Authorization: `token ${token}` } }))
         .toSorted((a: any, b: any): any => Date.parse(b.updated_at) - (Date.parse(a.updated_at)))
     langs = []
@@ -96,22 +106,21 @@ async function updateInfo() {
     const gitData = await Promise.all(fetchPromises);
     git.push(...gitData); // Spread syntax to push all elements of gitData array
 
-let usedLangs: any[][] = [];
-const a = [...repos, ...git];
-a.forEach((repo) => {
-    console.log(Object.entries(repo.languages.langs));
-    
-    if (repo.fork) if (repo.commits.length < 1) return
-    Object.entries(repo.languages.langs).forEach((lang: any[]) => {
-        let index = usedLangs.map((lang: any) => lang[0]).indexOf(lang[0])
-        if (index != -1) {
-            usedLangs[index][1] += lang[1]
-        } else {
-            usedLangs.push(lang)
-        }
-    });
-})
-usedLangs.sort((a,b) => a[1] - b[1])
+    let usedLangs: any[][] = [];
+    const a = [...repos, ...git];
+    a.forEach((repo) => {
+
+        if (repo.fork) if (repo.commits.length < 1) return
+        Object.entries(repo.languages.langs).forEach((lang: any[]) => {
+            let index = usedLangs.map((lang: any) => lang[0]).indexOf(lang[0])
+            if (index != -1) {
+                usedLangs[index][1] += lang[1]
+            } else {
+                usedLangs.push(lang)
+            }
+        });
+    })
+    usedLangs.sort((a, b) => a[1] - b[1])
     b = {
         repo: { all: repos }, langs: langs, cont: {
             contributions,

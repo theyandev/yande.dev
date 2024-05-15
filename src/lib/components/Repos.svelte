@@ -25,6 +25,7 @@
 	 * @type {any}
 	 */
 	export let rawlangs;
+	export let userGithubLinks = true;
 	/**
 	 * @type {{ offsetWidth: any; }}
 	 */
@@ -39,9 +40,13 @@
 					<img class="icon" src={git.owner?.avatar_url} alt="" />
 					<div class="vertical">
 						<div class="horiz">
-							<a class="name" href={git.html_url}>{git.name}</a>
+							<a class="name" href={userGithubLinks ? git.html_url : `/gh/${git.full_name}`}
+								>{git.name}</a
+							>
 						</div>
-						<a class="owner" href={git.owner?.html_url}
+						<a
+							class="owner"
+							href={userGithubLinks ? git.owner?.html_url : `/gh/${git.owner?.login}`}
 							>{git.owner?.login}{#if git.fork}
 								<img style="height: 0.5rem;" src={fork} alt="" />
 							{/if}</a
@@ -98,8 +103,8 @@
 		grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
 		gap: 0px;
 		width: 100%;
-		
-		animation: long 1s cubic-bezier(.39,.17,.32,1) 0.5s 1 forwards;
+
+		animation: long 1s cubic-bezier(0.39, 0.17, 0.32, 1) 0.5s 1 forwards;
 	}
 	.stuff > main {
 		transition: transform 0.5s ease;
@@ -131,7 +136,7 @@
 		border-width: 2px;
 		border-style: solid;
 		border-radius: 0px;
-		animation: b 1s cubic-bezier(.39,.17,.32,1) 0.5s 1 forwards;
+		animation: b 1s cubic-bezier(0.39, 0.17, 0.32, 1) 0.5s 1 forwards;
 		padding: 5px;
 	}
 	.overflow {

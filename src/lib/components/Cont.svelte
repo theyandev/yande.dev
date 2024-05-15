@@ -22,6 +22,8 @@
 	 * @type {any}
 	 */
 	export let rawlangs;
+
+	export let userGithubLinks = true;
 	/**
 	 * @param {string | number | boolean} name
 	 */
@@ -58,16 +60,22 @@
 </script>
 
 <div class="stuff">
-	{#each foo.git as git }
+	{#each foo.git as git}
 		<main class="vertical">
 			<div class="vertical overflow" in:expand={{ duration: 500 }}>
 				<div class="horiz">
 					<img class="icon" src={git.owner?.avatar_url} alt="" />
 					<div class="vertical">
 						<div class="horiz">
-							<a class="name" href={git.html_url}>{git.name}</a>
+							<a class="name" href={userGithubLinks ? git.html_url : `/gh/${git.full_name}`}
+								>{git.name}</a
+							>
 						</div>
-						<a class="owner" href={git.owner?.html_url}>{git.owner?.login}</a>
+						<a
+							class="owner"
+							href={userGithubLinks ? git.owner?.html_url : `/gh/${git.owner?.login}`}
+							>{git.owner?.login}</a
+						>
 					</div>
 				</div>
 				{#if git.description}
@@ -166,7 +174,7 @@
 		border-width: 2px;
 		border-style: solid;
 		border-radius: 0px;
-		animation: b 1s cubic-bezier(.39,.17,.32,1) 0.5s 1 forwards;
+		animation: b 1s cubic-bezier(0.39, 0.17, 0.32, 1) 0.5s 1 forwards;
 		padding: 5px;
 	}
 	.vertical {

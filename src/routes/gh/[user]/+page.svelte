@@ -1,0 +1,96 @@
+<script lang="ts">
+	//@ts-nocheck
+	import Repos from '$lib/components/Repos.svelte';
+	import repo from '$lib/images/repo.svg';
+	import followers from '$lib/images/followers.svg';
+	export let data: any;
+</script>
+
+<div class="center top">
+	<section class="center">
+		<a href={data.user.html_url} class="horiz">
+			<img class="pfp" src={data.user.avatar_url} alt="" />
+			<div class="vert center-v">
+				<h2>{data.user.name}</h2>
+				<h3>{data.user.login}</h3>
+				<div class="center-h">
+					<img class="img" src={repo} alt="" />
+
+					<div tooltip={`${data.user.public_repos} repos, ${data.repos.length} shown`}>
+						{data.user.public_repos} ({data.repos.length})
+					</div>
+					<div class="divider">·</div>
+					<img class="img" src={followers} alt="" />
+					<div tooltip={`${data.user.followers} followers`}>{data.user.followers}</div>
+				</div>
+				<p>{@html data.user.bio?.replace('\n', '<br>') ?? '<i>no bio</i>'}</p>
+			</div>
+		</a>
+		<Repos foo={data.repos} rawlangs={data.res.langMap} userGithubLinks={false} />
+	</section>
+</div>
+
+<style>
+	a {
+		color: white;
+	}
+	.divider {
+		margin: 0px 0.4em;
+	}
+	.top {
+		margin-top: 4rem;
+	}
+	.pfp {
+		border-radius: 50%;
+		margin: 10px;
+		height: 10rem;
+	}
+	.img {
+		height: 1.3em;
+	}
+	section {
+		display: block;
+		margin: 0%;
+		width: 70%;
+	}
+
+	.center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
+	.center-v {
+		display: flex;
+		justify-content: center;
+		/* align-items: center; */
+		flex-direction: column;
+	}
+
+	.center-h {
+		display: flex;
+		/* justify-content: center; */
+		align-items: center;
+		flex-direction: row;
+	}
+
+	h2 {
+		margin: 0px;
+		font-size: 30px;
+	}
+	h3 {
+		margin: 0px;
+		font-size: 10px;
+	}
+
+	.vert {
+		display: flex;
+		flex-direction: column;
+	}
+	.horiz {
+		display: flex;
+		flex-direction: row;
+
+		margin: 4px 0px;
+	}
+</style>

@@ -36,6 +36,10 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"js-yaml": "^4.1.0"
+		"@types/node": "^20.12.11",
+		"fs": "^0.0.1-security",
+		"js-yaml": "^4.1.0",
+		"marked": "^12.0.2",
+		"node": "^20.13.1"
 	}
 }
