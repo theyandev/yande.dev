@@ -73,13 +73,13 @@
 			<div class="vertical overflow" transition:slide>
 				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 
-				<div class="center-h {!toggledStates[issue.id] ? 'ma' : ''}">
+				<div class="center-h {toggledStates[issue.id] ? 'ma' : ''}">
 					<img class="icon" src={getPath(issue)} alt="" />
 					<h1><a href={issue.html_url}>{issue.title}</a></h1>
 					<!-- svelte-ignore a11y-missing-attribute -->
 					<img
 						class="icon-s"
-						src={!toggledStates[issue.id] ? collapse : uncollapse}
+						src={toggledStates[issue.id] ? collapse : uncollapse}
 						on:click={() => toggleItem(issue.id)}
 					/>
 					<div class="stats horiz">
