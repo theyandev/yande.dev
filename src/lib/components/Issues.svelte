@@ -115,7 +115,7 @@
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 
 				<div class="horiz">
-					{#if !toggledStates[issue.id]}
+					{#if toggledStates[issue.id]}
 						<div class="issue-body" transition:slide>
 							{@html issue.parsedBody}
 						</div>
