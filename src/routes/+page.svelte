@@ -73,8 +73,8 @@
 		}
 	}
 	import type { Pagedata } from './$types';
-	
-	export let data: Pagedata
+
+	export let data: Pagedata;
 
 	let IncludeForks = false;
 
@@ -155,6 +155,7 @@
 						git: []
 					}}
 					rawlangs={projects.langMap}
+					userGithubLinks={false}
 				/>
 
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -261,6 +262,7 @@
 						all: []
 					}}
 					rawlangs={projects.langMap}
+					userGithubLinks={false}
 				/>
 				<h2>Languages</h2>
 				<p>Here are the languages I use and how much I use them</p>
