@@ -13,7 +13,7 @@
 	import changed from '$lib/images/files/changed.svg';
 	import comments from '$lib/images/files/comments.svg';
 	import commits from '$lib/images/files/commits.svg';
-	import { slide } from 'svelte/transition';
+	import { slide, fade, scale, draw, blur, crossfade, fly } from 'svelte/transition';
 
 	// Custom transition to animate height from 0 to auto
 	// @ts-ignore
@@ -53,6 +53,7 @@
 	 *@type {{[index:number]: boolean}}
 	 */
 	let toggledStates = {};
+	let toggledComments = {};
 	/**
 	 * @param {number} id
 	 */
@@ -63,6 +64,14 @@
 		}
 		// Toggle the state
 		toggledStates[id] = !toggledStates[id];
+	}
+	function toggleCmt(id) {
+		// If the item doesn't exist in the object, initialize it with false
+		if (!(id in toggledComments)) {
+			toggledComments[id] = false;
+		}
+		// Toggle the state
+		toggledComments[id] = !toggledComments[id];
 	}
 </script>
 
@@ -114,10 +123,39 @@
 				</div>
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 
-				<div class="horiz">
+				<div class="vertical">
 					{#if toggledStates[issue.id]}
 						<div class="issue-body" transition:slide>
 							{@html issue.parsedBody}
+						</div>
+						<spacer transition:slide />
+						<!-- svelte-ignore a11y-missing-attribute -->
+						<div transition:slide>
+							<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+							<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+							<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+							<div class="horiz center-h">
+								<p>Comments</p>
+								<img
+									class="icon-s"
+									src={toggledComments[issue.id] ? collapse : uncollapse}
+									on:click={() => toggleCmt(issue.id)}
+								/>
+							</div>
+							
+							
+								{#if toggledComments[issue.id]}
+								<div transition:slide>
+									<spacer></spacer>
+									{#each issue.commentlist as cmt}
+									<div class="horiz center-h"><img class="pfp" src={cmt.user.avatar_url} alt="">{cmt.user?.login}</div>
+										<comment class="vertical">
+											{@html cmt.parsedbody}
+										</comment>
+									{/each}
+								</div>
+								{/if}
+							
 						</div>
 					{/if}
 				</div>
@@ -127,6 +165,21 @@
 </div>
 
 <style>
+comment {
+	border-width: 10px;
+	border-color: blue;
+}
+	.pfp{
+		height:2em;
+		border-radius: 50%;
+	}
+	spacer {
+		height: 2px;
+		margin: 8px 0px -4px 0px;
+		background-color: black;
+		width: 100%;
+	}
+
 	a {
 		color: white;
 	}
