@@ -37,14 +37,16 @@ function addArr(arr: number[]) {
 let b: any = {}
 async function updateInfo() {
     const contributions = await gracefulFetch("https://api.github.com/search/issues?q=author:theyande", { headers: { Authorization: `token ${token}` } })
-    const items = contributions.items.map(async (c: { body: any; pull_request: any; }) => ({
-        ...c, parsedBody: marked.parse(c.body ?? ""), pullData: (c.pull_request ? await gracefulFetch(c.pull_request.url, { headers: { Authorization: `token ${token}` } }) : undefined)
+    const items = contributions.items.map(async (c: {
+        comments_url: string; body: any; pull_request: any; 
+}) => ({
+        ...c, commentlist:(await gracefulFetch(c.comments_url, { headers: { Authorization: `token ${token}` } })).map((cmt: any)=>({...cmt, parsedbody: marked.parse(cmt.body ?? "")})) , parsedBody: marked.parse(c.body ?? ""), pullData: (c.pull_request ? await gracefulFetch(c.pull_request.url, { headers: { Authorization: `token ${token}` } }) : undefined)
     }))
 
 
     contributions.items = await Promise.all(items)
-
-    console.log(contributions.items)
+    console.log(contributions.items[0].comments)
+  
 
     repos = (await gracefulFetch("https://api.github.com/users/theyande/repos", { headers: { Authorization: `token ${token}` } }))
         .toSorted((a: any, b: any): any => Date.parse(b.updated_at) - (Date.parse(a.updated_at)))
