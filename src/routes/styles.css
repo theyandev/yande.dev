@@ -97,9 +97,7 @@ a:hover {
 	font-size: 0.9em;
 }
 
-.issue-body * {
-	margin: 0;
-}
+
 
 .issue-body h3 {
 	margin-top: 1em;
@@ -109,8 +107,9 @@ a:hover {
 
 blockquote{
 	border-left: 5px solid #007396;
+	border-right: 5px solid #007396;
 	border-radius: 10px;
-	padding: 0em;
+	padding: 0.3em;
 	background-color: #1c1b1c;
 	margin: 0px;
   }
