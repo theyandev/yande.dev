@@ -122,7 +122,7 @@
 				></path>
 			</svg>
 		</div>
-		<h1 class="name" style="background-color: white ; color: black;">Hi, Im Yande</h1>
+		<h1 class="name" style="background-color: white ; color: black;">Hi, Im Yande {Math.floor(Math.random() * 10) == 5? ":3" : ""}</h1>
 		<div class="divider v-flip">
 			<svg
 				data.name="Layer 1"
