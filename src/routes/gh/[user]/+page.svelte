@@ -1,11 +1,13 @@
 <script lang="ts">
-	//@ts-nocheck
 	import Repos from '$lib/components/Repos.svelte';
 	import repo from '$lib/images/repo.svg';
 	import followers from '$lib/images/followers.svg';
+	import Og from '$lib/components/Og.svelte';
 	export let data: any;
 </script>
-
+<svelte:head>
+	<Og title={data.user.name} description={`${data.user.public_repos} repos, ${data.repos.length} shown`}/>
+</svelte:head>
 <div class="center top">
 	<section class="center">
 		<a href={data.user.html_url} class="horiz">

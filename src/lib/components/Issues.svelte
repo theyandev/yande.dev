@@ -214,10 +214,9 @@
 	.stuff {
 		display: flex;
 		flex-direction: column;
-		gap: 0px;
+		gap: 20px;
 		width: 100%;
 
-		animation: long 1s cubic-bezier(0.39, 0.17, 0.32, 1) 0.5s 1 forwards;
 	}
 	.stuff > main {
 		transition: transform 0.5s ease;
@@ -304,14 +303,6 @@
 		margin-bottom: 5px;
 	}
 
-	@keyframes long {
-		from {
-			gap: 0px;
-		}
-		to {
-			gap: 20px;
-		}
-	}
 	@keyframes b {
 		from {
 			border-radius: 0px;

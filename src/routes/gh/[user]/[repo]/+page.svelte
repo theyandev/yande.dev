@@ -1,10 +1,13 @@
 <script lang="ts">
-	//@ts-nocheck
+
 	import Issues from '$lib/components/Issues.svelte';
+	import Og from '$lib/components/Og.svelte';
 
 	export let data: any;
 </script>
-
+<svelte:head>
+	<Og title={data.repo.name} description={`by ${data.user.name}`}/>
+</svelte:head>
 <div class="center top">
 	<section class="center">
 		<a href={data.repo.html_url}>

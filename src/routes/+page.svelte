@@ -10,6 +10,7 @@
 	import filt from '$lib/images/filter.svg';
 	import Load from '$lib/components/Load.svelte';
 	import Seg from '$lib/components/Seg.svelte';
+	import Og from '$lib/components/Og.svelte';
 	let filtersShown = false;
 
 	function addArr(arr: number[]) {
@@ -103,8 +104,7 @@
 
 <!-- svelte-ignore non-top-level-reactive-declaration -->
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="A website for a professional idiot" />
+	<Og/>
 </svelte:head>
 <main class="center">
 	<hero class="center">
