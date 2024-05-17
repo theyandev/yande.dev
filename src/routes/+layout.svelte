@@ -1,35 +1,19 @@
 <script>
 	import Header from './Header.svelte';
 	import './styles.css';
-	import { page, navigating } from '$app/stores';
 </script>
 
 <div class="app">
 	<Header />
-	
-	
-		{#if $navigating}
-	<div class="navigatoing"><br><br><br><br>navigating to {$navigating.to?.url.pathname}</div>
 
-	
-	
-{/if}
-<main><slot /></main>	
-    
+	<main><slot /></main>
+
 	<footer>
 		<p>yes yes very website</p>
 	</footer>
 </div>
 
 <style>
-
-	.navigatoing {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
 	.app {
 		display: flex;
 		flex-direction: column;
@@ -54,8 +38,6 @@
 		align-items: center;
 		padding: 12px;
 	}
-
-	
 
 	@media (min-width: 480px) {
 		footer {
