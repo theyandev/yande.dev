@@ -77,21 +77,21 @@
 
 <div class="stuff" bind:this={stuffElement}>
 	{#each foo as issue (issue.id)}
-		<main class="vertical {!toggledStates[issue.id] ? 'margin' : ''}">
+		<main class="vertical">
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<div class="vertical overflow" transition:slide>
 				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 
-				<div class="center-h {!toggledStates[issue.id] ? 'ma' : ''}">
+				<div class="center-h {toggledStates[issue.id] ? 'ma' : ''}">
 					<img class="icon" src={getPath(issue)} alt="" />
-					<h1 class="title {toggledStates[issue.id] ? 'title-o' : ''}"><a href={issue.html_url}>{issue.title}</a></h1>
+					<h1><a href={issue.html_url}>{issue.title}</a></h1>
 					<!-- svelte-ignore a11y-missing-attribute -->
 					<img
-						class="icon-s col"
-						src={!toggledStates[issue.id] ? collapse : uncollapse}
+						class="icon-s"
+						src={toggledStates[issue.id] ? collapse : uncollapse}
 						on:click={() => toggleItem(issue.id)}
 					/>
-					<div class="stats horiz {toggledStates[issue.id] ? 's-open' : ''}">
+					<div class="stats horiz">
 						<div class="horiz" tooltip={`${issue.pullData?.comments ?? issue.comments} Comments`}>
 							<img class="icon-ss" src={comments} alt="" />
 							<s></s>
@@ -124,40 +124,38 @@
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 
 				<div class="vertical">
-					{#if !toggledStates[issue.id]}
+					{#if toggledStates[issue.id]}
 						<div class="issue-body" transition:slide>
 							{@html issue.parsedBody}
 						</div>
-
-						<div class="comment-container" transition:slide>
+						<spacer transition:slide />
+						<!-- svelte-ignore a11y-missing-attribute -->
+						<div transition:slide>
 							<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 							<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 							<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 							<div class="horiz center-h">
 								<p>Comments</p>
-								<!-- svelte-ignore a11y-missing-attribute -->
 								<img
 									class="icon-s"
-									src={!toggledComments[issue.id] ? collapse : uncollapse}
+									src={toggledComments[issue.id] ? collapse : uncollapse}
 									on:click={() => toggleCmt(issue.id)}
 								/>
 							</div>
-
-							{#if !toggledComments[issue.id]}
+							
+							
+								{#if toggledComments[issue.id]}
 								<div transition:slide>
 									<spacer></spacer>
 									{#each issue.commentlist as cmt}
-										<div class="comment">
-											<div class="horiz center-h">
-												<img class="pfp" src={cmt.user.avatar_url} alt="" />{cmt.user?.login}
-											</div>
-											<div class="vertical comment-body">
-												{@html cmt.parsedbody}
-											</div>
-										</div>
+									<div class="horiz center-h"><img class="pfp" src={cmt.user.avatar_url} alt="">{cmt.user?.login}</div>
+										<comment class="vertical">
+											{@html cmt.parsedbody}
+										</comment>
 									{/each}
 								</div>
-							{/if}
+								{/if}
+							
 						</div>
 					{/if}
 				</div>
@@ -167,19 +165,12 @@
 </div>
 
 <style>
-	
-	.comment {
-		border: 1px solid #5151513d;
-		border-left: 4px solid #71717181;
-		border-radius: 8px;
-		padding: 2px 5px;
-		margin: 10px 5px;
-	}
-	.comment-body {
-		margin-top: 5px;
-	}
-	.pfp {
-		height: 2em;
+comment {
+	border-width: 10px;
+	border-color: blue;
+}
+	.pfp{
+		height:2em;
 		border-radius: 50%;
 	}
 	spacer {
@@ -224,13 +215,8 @@
 	}
 	.stats {
 		position: absolute;
+		right: 0;
 		bottom: 0;
-		left: 10px;
-		transform: translateY(50%);
-		background-color: #1e2323;
-		border: 2px solid #515151;
-		border-radius: 15px;
-		padding: 2px 10px;
 	}
 
 	spac {
@@ -246,15 +232,8 @@
 	}
 	.icon-s {
 		height: 1.5em;
-		
 		/* border-radius: 50%; */
 		/* margin-right: 5px; */
-	}
-
-	.col {
-		position: absolute;
-		top: 0px;
-		right: 0px;
 	}
 	.icon-ss {
 		height: 1em;
@@ -279,7 +258,6 @@
 		border-radius: 0px;
 		animation: b 1s cubic-bezier(0.39, 0.17, 0.32, 1) 0.5s 1 forwards;
 		padding: 5px;
-		padding-bottom: 15px;
 	}
 	.overflow {
 		overflow: hidden;
@@ -296,20 +274,12 @@
 		margin: 0px;
 		font-size: 1.2em;
 	}
-
-	.title {
-		transition: all 0.3s;
-	}
-	.title-o {
-		margin-bottom: 5px;
-	}
-
 	@keyframes long {
 		from {
 			gap: 0px;
 		}
 		to {
-			gap: 20px;
+			gap: 10px;
 		}
 	}
 	@keyframes b {
