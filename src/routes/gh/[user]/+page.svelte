@@ -2,11 +2,28 @@
 	import Repos from '$lib/components/Repos.svelte';
 	import repo from '$lib/images/repo.svg';
 	import followers from '$lib/images/followers.svg';
-	import Og from '$lib/components/Og.svelte';
+	// import Og from '$lib/components/Og.svelte';
 	export let data: any;
 </script>
 <svelte:head>
-	<Og title={data.user.name} description={`${data.user.public_repos} repos, ${data.repos.length} shown`}/>
+	<title>{data.user.name}</title>
+	<meta name="description" content={`${data.user.public_repos} repos, ${data.repos.length} shown`} />
+	
+	<!-- Open Graph  Tags -->
+	<meta property="og:url" content={data.user.name} />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content={data.user.name} />
+	<meta property="og:description" content={`${data.user.public_repos} repos, ${data.repos.length} shown`}/>
+	
+	
+	<!-- Twitter (x now :sob:) Tags -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta property="twitter:domain" content="yande.dev" />
+	<meta property="twitter:url" content={data.user.name} />
+	<meta name="twitter:title" content={data.user.name} />
+	<meta name="twitter:description" content={`${data.user.public_repos} repos, ${data.repos.length} shown`} />
+
+	<!-- <Og title={data.user.name} description={`${data.user.public_repos} repos, ${data.repos.length} shown`}/> -->
 </svelte:head>
 <div class="center top">
 	<section class="center">

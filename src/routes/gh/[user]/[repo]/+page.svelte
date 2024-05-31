@@ -1,12 +1,29 @@
 <script lang="ts">
 
 	import Issues from '$lib/components/Issues.svelte';
-	import Og from '$lib/components/Og.svelte';
+	// import Og from '$lib/components/Og.svelte';
 
 	export let data: any;
 </script>
 <svelte:head>
-	<Og title={data.repo.name} description={`by ${data.user.name}`}/>
+	<title>{data.repo.name}</title>
+	<meta name="description" content={`by ${data.repo.name}`} />
+	
+	<!-- Open Graph  Tags -->
+	<meta property="og:url" content={data.repo.name} />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content={data.repo.name} />
+	<meta property="og:description" content={`by ${data.repo.name}`}/>
+	
+	
+	<!-- Twitter (x now :sob:) Tags -->
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta property="twitter:domain" content="yande.dev" />
+	<meta property="twitter:url" content={data.repo.name} />
+	<meta name="twitter:title" content={data.repo.name} />
+	<meta name="twitter:description" content={`by ${data.repo.name}`} />
+
+	<!-- <Og title={data.repo.name} description={`by ${data.repo.name}`}/> -->
 </svelte:head>
 <div class="center top">
 	<section class="center">
@@ -15,7 +32,7 @@
 				<img class="pfp" src={data.user.avatar_url} alt="" />
 				<div class="vert center-v">
 					<h2>{data.repo.name}</h2>
-					<h3>{data.user.name}</h3>
+					<h3>{data.repo.name}</h3>
 				</div>
 			</div>
 		</a>

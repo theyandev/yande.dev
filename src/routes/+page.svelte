@@ -10,7 +10,7 @@
 	import filt from '$lib/images/filter.svg';
 	import Load from '$lib/components/Load.svelte';
 	import Seg from '$lib/components/Seg.svelte';
-	import Og from '$lib/components/Og.svelte';
+	// import Og from '$lib/components/Og.svelte';
 	let filtersShown = false;
 
 	function addArr(arr: number[]) {
@@ -104,7 +104,23 @@
 
 <!-- svelte-ignore non-top-level-reactive-declaration -->
 <svelte:head>
-	<Og/>
+	<title>yande.dev</title>
+<meta name="description" content=website for dumdum />
+
+<!-- Open Graph  Tags -->
+<meta property="og:url" content=yande.dev />
+<meta property="og:type" content="website" />
+<meta property="og:title" content=yande.dev />
+<meta property="og:description" content=website for dumdum/>
+
+
+<!-- Twitter (x now :sob:) Tags -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain" content="yande.dev" />
+<meta property="twitter:url" content=yande.dev />
+<meta name="twitter:title" content=:3 />
+<meta name="twitter:description" content=website for dudum />
+
 </svelte:head>
 <main class="center">
 	<hero class="center">
