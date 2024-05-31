@@ -74,7 +74,7 @@ const auth = new google.auth.GoogleAuth({
   
 let data = []
 data = await updateAndGetData()
-setInterval(async ()=>{data = await updateAndGetData()},10*1000)
+// setInterval(async ()=>{data = await updateAndGetData()},10*1000)
 export async function GET() {
     data = await updateAndGetData()
 
