@@ -38,6 +38,8 @@
 	"dependencies": {
 		"@types/node": "^20.12.11",
 		"fs": "^0.0.1-security",
+		"googleapis": "^137.1.0",
+		"javascript-time-ago": "^2.5.10",
 		"js-yaml": "^4.1.0",
 		"marked": "^12.0.2",
 		"node": "^20.13.1"

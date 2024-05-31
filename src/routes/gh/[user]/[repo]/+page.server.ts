@@ -4,7 +4,7 @@ export const load: PageLoad = async ({ params, fetch }) => {
     const res = await fetch(`/api/github`);
     const item = JSON.parse(await res.text())
     const repo = [...new Set([...item.repo.all, ...item.cont.git])].find((repo) => {
-        console.log(repo.full_name)
+        // console.log(repo.full_name)
         return repo.full_name.toLowerCase() == `${params.user.toLowerCase()}/${params.repo.toLowerCase()}`
     })
 

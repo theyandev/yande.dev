@@ -2,7 +2,7 @@
 	import logo from '$lib/images/svelte-logo.svg';
 	import github from '$lib/images/github.svg';
 	import yande from '$lib/images/yande.svg';
-	import Load from '$lib/components/Load.svelte';
+	// import Load from '$lib/components/Load.svelte';
 	import { page, navigating } from '$app/stores';
 </script>
 
@@ -30,6 +30,9 @@
 
 				<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
 					<a href="/about">About</a>
+				</li>
+				<li aria-current={$page.url.pathname === '/blog' ? 'page' : undefined}>
+					<a href="/blog">Posts</a>
 				</li>
 
 				<li aria-current={$page.url.pathname === '/bots' ? 'page' : undefined}>

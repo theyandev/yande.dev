@@ -45,7 +45,7 @@ async function updateInfo() {
 
 
     contributions.items = await Promise.all(items)
-    console.log(contributions.items[0].comments)
+    // console.log(contributions.items[0].comments)
   
 
     repos = (await gracefulFetch("https://api.github.com/users/theyande/repos", { headers: { Authorization: `token ${token}` } }))
