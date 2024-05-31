@@ -24,7 +24,7 @@ const auth = new google.auth.GoogleAuth({
   const range = 'Sheet1!A:B';
   
   async function updateAndGetData() {
-    // console.log("fetching data")
+    console.log("fetching data")
     try {
       // Read the data from the specified range
       const response = await sheets.spreadsheets.values.get({
@@ -74,9 +74,9 @@ const auth = new google.auth.GoogleAuth({
   
 let data = []
 data = await updateAndGetData()
-setInterval(async ()=>{data = await updateAndGetData()},10*1000)
+// setInterval(async ()=>{data = await updateAndGetData()},10*1000)
 export async function GET() {
-    
+    data = await updateAndGetData()
 
         return json({
                posts : data.sort((a,b) => new Date(b.date) - new Date(a.date))
