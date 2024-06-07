@@ -4,6 +4,140 @@
 	import yande from '$lib/images/yande.svg';
 	// import Load from '$lib/components/Load.svelte';
 	import { page, navigating } from '$app/stores';
+	import { onMount } from 'svelte';
+	import FlagBar from '$lib/components/FlagBar.svelte';
+	/**
+ * @type {any}
+ */
+	let colors = []; 
+		
+
+	let colorIndex = -1;
+/**
+ * @type {any}
+ */
+	const allColors = [
+		[
+			['#e40207', 1],
+			['#ff8c00', 1],
+			['#ffed00', 1],
+			['#017f27', 1],
+			['#004eff', 1],
+			['#760788', 1]
+		],
+		[
+			['#5acefb', 1],
+			['#f5a9b9', 1],
+			['#ffffff', 1],
+			['#f5a9b9', 1],
+			['#5acefb', 1]
+		],
+		[
+			['#f12193', 1],
+			['#ffd00d', 1],
+			['#0096ff', 1]
+		],
+		[
+			['#fe0066', 2],
+			['#a915cf', 1],
+			['#3302cb', 2],
+		],[
+			['#fbe700', 1],
+			['#ffffff', 1],
+			['#9646cf', 1],
+			['#2d2d2d', 1],
+		],[
+			['#000000', 1],
+			['#a5a5a5', 1],
+			['#ffffff', 1],
+			['#800980', 1],
+		],[
+			['#d42c02', 1],
+			['#ed7621', 1],
+			['#ff9a56', 1],
+			['#fefefe', 1],
+			['#d162a4', 1],
+			['#b4568f', 1],
+			['#a20061', 1]
+		],[
+			['#7f7f7f', 1],
+			['#c4c4c4', 1],
+			['#9ad9eb', 1],
+			['#ffffff', 1],
+			['#9ad9eb', 1],
+			['#c4c4c4', 1],
+			['#7f7f7f', 1]
+		],[
+			['#7f7f7f', 1],
+			['#c4c4c4', 1],
+			['#fbfe74', 1],
+			['#ffffff', 1],
+			['#fbfe74', 1],
+			['#c4c4c4', 1],
+			['#7f7f7f', 1]
+		],[
+			['#7f7f7f', 1],
+			['#c4c4c4', 1],
+			['#ffaec9', 1],
+			['#ffffff', 1],
+			['#ffaec9', 1],
+			['#c4c4c4', 1],
+			['#7f7f7f', 1]
+		],[
+			['#7f7f7f', 1],
+			['#c4c4c4', 1],
+			['#9ad9eb', 1],
+			['#ffaec9', 1],
+			['#ffffff', 1],
+			['#ffaec9', 1],
+			['#9ad9eb', 1],
+			['#c4c4c4', 1],
+			['#7f7f7f', 1]
+		],[
+			['#111111', 2],
+			['#6fa8dc', 1],
+			['#111111', 2],
+		],[
+			['#111111', 2],
+			['#ffc0cb', 1],
+			['#111111', 2],
+		],[
+			['#000000', 1],
+			['#bcc4c6', 1],
+			['#ffffff', 1],
+			['#b6f583', 1],
+			['#ffffff', 1],
+			['#bcc4c6', 1],
+			['#000000', 1],
+		],[
+			['#ff8abd', 1],
+			['#ccf5fe', 1],
+			['#99eaff', 1],
+			['#74dfff', 1],
+			['#99eafd', 1],
+			['#cdf5fe', 1],
+			['#ff8abd', 1],
+		],[
+			['#75dfff', 1],
+			['#fee1ed', 1],
+			['#ffb5d7', 1],
+			['#fe8dbf', 1],
+			['#ffb4d7', 1],
+			['#fee1ed', 1],
+			['#74dfff', 1],
+		]
+	];
+
+	/**
+	 * @param {any[]} array
+	 */
+	
+
+	setInterval(() => {
+		colorIndex++;
+		colorIndex %= allColors.length;
+		colors = allColors[colorIndex];
+	}, 1000);
 </script>
 
 <header>
@@ -11,52 +145,75 @@
 		<svg style="transform: translateX(1px);" viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
 		</svg>
-		{#if $navigating}
-			<ul>
-				<li class="corner">
-					<div class="t">
-						<div class="loader"></div>
-						<p>navigating to {$navigating.to?.url.pathname}</p>
-					</div>
-				</li>
-			</ul>
-		{:else}
-			<ul>
-				<li class="corner">
-					<a href="/">
-						<img src={yande} alt="Yande.dev" />
-					</a>
-				</li>
-
-				<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-					<a href="/about">About</a>
-				</li>
-				<li aria-current={$page.url.pathname === '/blog' ? 'page' : undefined}>
-					<a href="/blog">Posts</a>
-				</li>
-
-				<li aria-current={$page.url.pathname === '/bots' ? 'page' : undefined}>
-					<a href="/bots">Bots</a>
-				</li>
-				<li class="corner">
-					<a href="https://github.com/theyande/">
-						<img src={github} alt="GitHub" />
-					</a>
-				</li>
-				<li class="corner">
-					<a href="https://kit.svelte.dev">
-						<img src={logo} alt="SvelteKit" />
-					</a>
-				</li>
-			</ul>
-		{/if}
+		<div class="vert">
+			{#if $navigating}
+				<ul >
+					<li class="corner">
+						<div class="t">
+							<div class="loader"></div>
+							<p>navigating to {$navigating.to?.url.pathname}</p>
+						</div>
+					</li>
+				</ul>
+				<FlagBar segments={colors} total={colors.reduce((/** @type {any} */ p, /** @type {any[]} */ c) => p + c[1],0)}></FlagBar>
+				<!-- <div class="pride" style="background: {generateGradientFromArray(colors)}"></div> -->
+			{:else}
+			<!-- <div class="pride" style="position:relative; transform: translateY(100%);"><FlagBar segments={colors} total={colors.reduce((/** @type {any} */ p, /** @type {any[]} */ c) => p + c[1],0)}></FlagBar></div> -->
+				<ul>
+					<li class="corner">
+						<a href="/">
+							<img src={yande} alt="Yande.dev" />
+						</a>
+					</li>
+					<li aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
+						<a href="/about">About</a>
+					</li>
+					<li aria-current={$page.url.pathname === '/blog' ? 'page' : undefined}>
+						<a href="/blog">Posts</a>
+					</li>
+					<li aria-current={$page.url.pathname === '/bots' ? 'page' : undefined}>
+						<a href="/bots">Bots</a>
+					</li>
+					<li class="corner">
+						<a href="https://github.com/theyande/">
+							<img src={github} alt="GitHub" />
+						</a>
+					</li>
+					<li class="corner">
+						<a href="https://kit.svelte.dev">
+							<img src={logo} alt="SvelteKit" />
+						</a>
+					</li>
+				</ul>
+				<div class="pride" style="transform: translateY(-50%);"><FlagBar segments={colors} total={colors.reduce((/** @type {any} */ p, /** @type {any[]} */ c) => p + c[1],0)}></FlagBar></div>
+				
+			{/if}
+		</div>
 		<svg style="transform: translateX(-1px);" viewBox="0 0 2 3" aria-hidden="true">
 			<path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
 		</svg>
 	</nav>
+
 </header>
 
 <style>
+	.pride {
+		width:100%;
+		
+		height: 15px;
+		overflow:hidden;
+		display: flex;
+		justify-content: center;
+		z-index: 10;
+		overflow: hidden;
+		border-radius: 5px;
+	}
+	.vert {
+		display: flex;
+		flex-direction: column;
+		/* transform: translateY(-5px); */
+	}
+
 	.loader {
 		width: 20px;
 		aspect-ratio: 1.154;
@@ -124,6 +281,7 @@
 		align-items: center;
 		list-style: none;
 		background: var(--background);
+		/* opacity: 0.5; */
 		background-size: contain;
 	}
 
